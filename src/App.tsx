@@ -106,19 +106,28 @@ const date = new Date(value);
 return date.toISOString().split('T')[0];
 };
 
-// Styled components
+// Updated styled components
 const AppContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: #f0f2f5;
   padding: 2rem;
   box-sizing: border-box;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+`;
+
+const DashboardCard = styled.div`
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin-bottom: 2rem;
 `;
 
 const ChartContainer = styled.div`
   width: 100%;
-  height: 500px; // Set explicit height
+  height: 500px;
   position: relative;
 `;
 
@@ -127,52 +136,97 @@ const ControlsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+`;
+
+const StatsContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+`;
+
+const StatItem = styled.div`
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+`;
+
+const StatValue = styled.h3`
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f77b4;
+`;
+
+const StatLabel = styled.p`
+  margin: 0;
+  font-size: 0.9rem;
+  color: #6c757d;
 `;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    marginRight?: boolean;
+  marginRight?: boolean;
+  primary?: boolean;
+}
+
+const Button = styled.button.withConfig({
+  shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
+})<ButtonProps>`
+  background-color: ${(props) => (props.primary ? '#1f77b4' : '#ffffff')};
+  color: ${(props) => (props.primary ? '#ffffff' : '#1f77b4')};
+  border: 2px solid #1f77b4;
+  padding: 0.5rem 1rem;
+  margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => (props.primary ? '#155a8a' : '#e6f2ff')};
   }
-  
-  const Button = styled.button.withConfig({
-    shouldForwardProp: (prop) => prop !== 'marginRight',
-  })<ButtonProps>`
-    background-color: #1f77b4;
-    color: #ffffff;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 4px;
-  
-    &:hover {
-      background-color: #155a8a;
-    }
-  `;
+`;
 
 const Modal = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: #ffffff;
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   z-index: 1000;
+  max-width: 80%;
 `;
 
 const ModalImage = styled.img`
   width: 80px;
   height: 80px;
-  margin-right: 1rem;
+  margin-right: 1.5rem;
+  border-radius: 8px;
+`;
+
+const ModalContent = styled.div`
+  flex: 1;
+`;
+
+const ModalTitle = styled.h2`
+  margin: 0 0 0.5rem 0;
+  color: #333;
+`;
+
+const ModalDescription = styled.p`
+  margin: 0;
+  color: #666;
 `;
 
 const Heading = styled.h1`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   text-align: center;
+  color: #333;
+  font-size: 2.5rem;
 `;
 
 /**
@@ -530,120 +584,141 @@ export const App: React.FC = () => {
   
     return (
         <AppContainer>
-          <Heading>GitHub Projects Timeline</Heading>
-          <ChartContainer>
-            <ResponsiveLine
-              data={visibleData}
-              margin={{ top: 50, right: 200, bottom: 80, left: 80 }}
-              xScale={{
-                type: 'time',
-                format: '%Y-%m-%d',
-                useUTC: false,
-                precision: 'day',
-              }}
-              xFormat="time:%Y-%m-%d"
-              yScale={{
-                type: 'linear',
-                min: 0,
-                max: 'auto',
-                stacked: false,
-                reverse: false,
-              }}
-              axisTop={null}
-              axisRight={null}
-              axisBottom={{
-                tickValues: xAxisTickValues,
-                format: (value) => formatDate(value),
-                legend: 'Date',
-                legendOffset: 40,
-                legendPosition: 'middle',
-              }}
-              axisLeft={{
-                tickSize: 5,
-                tickPadding: 5,
-                tickRotation: 0,
-                legend: 'Stars',
-                legendOffset: -60,
-                legendPosition: 'middle',
-              }}
-              lineWidth={2}
-              pointSize={0}
-              useMesh={true}
-              enableSlices={false}
-              animate={true}
-              motionConfig="gentle"
-              colors={(serie) => colorScale(serie.id as string)}
-              theme={{
-                background: '#ffffff',
-                text: {
+          <DashboardCard>
+            <Heading>GitHub Projects Timeline</Heading>
+            <ChartContainer>
+              <ResponsiveLine
+                data={visibleData}
+                margin={{ top: 50, right: 200, bottom: 80, left: 80 }}
+                xScale={{
+                  type: 'time',
+                  format: '%Y-%m-%d',
+                  useUTC: false,
+                  precision: 'day',
+                }}
+                xFormat="time:%Y-%m-%d"
+                yScale={{
+                  type: 'linear',
+                  min: 0,
+                  max: 'auto',
+                  stacked: false,
+                  reverse: false,
+                }}
+                axisTop={null}
+                axisRight={null}
+                axisBottom={{
+                  tickValues: xAxisTickValues,
+                  format: (value) => formatDate(value),
+                  legend: 'Date',
+                  legendOffset: 40,
+                  legendPosition: 'middle',
+                }}
+                axisLeft={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: 'Stars',
+                  legendOffset: -60,
+                  legendPosition: 'middle',
+                }}
+                lineWidth={2}
+                pointSize={0}
+                useMesh={true}
+                enableSlices={false}
+                animate={true}
+                motionConfig="gentle"
+                colors={(serie) => colorScale(serie.id as string)}
+                theme={{
+                  background: '#ffffff',
+                  text: {
                     fill: '#333333',
                     fontSize: 12,
-                },
-                axis: {
-                  domain: {
+                  },
+                  axis: {
+                    domain: {
+                      line: {
+                        stroke: '#e0e0e0',
+                        strokeWidth: 1,
+                      },
+                    },
+                    ticks: {
+                      line: {
+                        stroke: '#e0e0e0',
+                        strokeWidth: 1,
+                      },
+                      text: {
+                        fill: '#666666',
+                      },
+                    },
+                    legend: {
+                      text: {
+                        fontSize: 12,
+                        fill: '#333333',
+                        fontWeight: 'bold',
+                      },
+                    },
+                  },
+                  grid: {
                     line: {
-                      stroke: '#777777',
+                      stroke: '#f0f0f0',
                       strokeWidth: 1,
                     },
                   },
-                  ticks: {
-                    line: {
-                      stroke: '#777777',
-                      strokeWidth: 1,
-                    },
-                    text: {},
-                  },
-                  legend: {
+                  legends: {
                     text: {
-                      fontSize: 12,
                       fill: '#333333',
                     },
                   },
-                },
-                grid: {
-                  line: {
-                    stroke: '#dddddd',
-                    strokeWidth: 1,
+                  tooltip: {
+                    container: {
+                      background: '#ffffff',
+                      boxShadow: '0 3px 9px rgba(0, 0, 0, 0.2)',
+                      borderRadius: '4px',
+                    },
                   },
-                },
-              }}
-              layers={layers}
-            />
-            {/* Event Modal */}
-            {currentEvent && (
-              <Modal>
-                {currentEvent.logoUrl && (
-                  <ModalImage
-                    src={currentEvent.logoUrl}
-                    alt={currentEvent.title}
-                  />
-                )}
-                <div>
-                  <h2>{currentEvent.title}</h2>
-                  <p>{currentEvent.description}</p>
-                </div>
-              </Modal>
-            )}
-          </ChartContainer>
-          <ControlsContainer>
-            <div>
-              <h3>
-                Date: {timeline[currentTimeIndex]?.toISOString().split('T')[0]}
-              </h3>
-              <h3>
-                Total Stars: {aggregateStars.toLocaleString()}
-              </h3>
-            </div>
-            <div>
-              <Button onClick={handlePlayPause} marginRight>
-                {isPlaying ? 'Pause' : 'Play'}
-              </Button>
-              <Button onClick={handleReset}>Reset</Button>
-            </div>
-          </ControlsContainer>
+                }}
+                layers={layers}
+              />
+              {currentEvent && (
+                <Modal>
+                  {currentEvent.logoUrl && (
+                    <ModalImage
+                      src={currentEvent.logoUrl}
+                      alt={currentEvent.title}
+                    />
+                  )}
+                  <ModalContent>
+                    <ModalTitle>{currentEvent.title}</ModalTitle>
+                    <ModalDescription>{currentEvent.description}</ModalDescription>
+                  </ModalContent>
+                </Modal>
+              )}
+            </ChartContainer>
+            <ControlsContainer>
+              <StatsContainer>
+                <StatItem>
+                  <StatValue>
+                    {timeline[currentTimeIndex]?.toISOString().split('T')[0]}
+                  </StatValue>
+                  <StatLabel>Date</StatLabel>
+                </StatItem>
+                <StatItem>
+                  <StatValue>{aggregateStars.toLocaleString()}</StatValue>
+                  <StatLabel>Total Stars</StatLabel>
+                </StatItem>
+              </StatsContainer>
+              <div>
+                <Button onClick={handlePlayPause} marginRight primary>
+                  {isPlaying ? 'Pause' : 'Play'}
+                </Button>
+                <Button onClick={handleReset}>Reset</Button>
+              </div>
+            </ControlsContainer>
+          </DashboardCard>
         </AppContainer>
       );
   };
+
 
 
 
