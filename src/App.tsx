@@ -571,10 +571,10 @@ export const App: React.FC = () => {
                       series={props.series as ComputedSerie[]} // Ensure correct typing
                     />
                   ),
-                // // Custom layer for event markers
-                // (props) => (
-                //   <EventMarkersLayer {...props} events={events} />
-                // ),
+                // Custom layer for event markers
+                (props) => (
+                  <EventMarkersLayer {...props} events={events} />
+                ),
               ]}
             />
             {/* Event Modal */}
