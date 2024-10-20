@@ -201,14 +201,12 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         if (timeline.length > 0 && data.length > 0) {
-          console.log('Visible Data:', visibleData);
           updateVisibleData(0);
         }
       }, [timeline, data]);
 
     useEffect(() => {
         // Load project data from JSON file
-        console.log('Loaded project data:', projectDataJson);
         setProjectData(projectDataJson as ProjectData[]);
       }, []);
   
@@ -251,7 +249,6 @@ export const App: React.FC = () => {
     count: history.count,
   }))
   .sort((a, b) => a.date.getTime() - b.date.getTime());
-  console.log('Parsed dates:', sortedHistory.map(d => d.date));
   
         // Create a lookup for existing data points
         const starHistoryMap = new Map(
