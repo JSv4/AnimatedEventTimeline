@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ComputedSerie, ResponsiveLine, Serie } from '@nivo/line';
+import { ResponsiveLine, Serie, CustomLayerProps, ComputedSerie, Layer } from '@nivo/line';
 import styled from 'styled-components';
 
 import * as d3 from 'd3';
@@ -348,7 +348,7 @@ export const App: React.FC = () => {
   
     /**
      * Updates the visible data for the current time index.
-     * @param timeIndex The index of the current time point in the timeline.
+     * @param timeIndex - The index of the current time point in the timeline.
      */
     const updateVisibleData = (timeIndex: number) => {
       const currentTime = timeline[timeIndex];
@@ -400,16 +400,22 @@ export const App: React.FC = () => {
   
       latestCounts.sort((a, b) => b.count - a.count);
       const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
-      const newTopProjects = new Set(topFiveIds);
+      const newTopProjects = new Set<string>(topFiveIds);
   
-      // Determine projects entering or leaving top 5
-      const leavingProjects = new Set([...topProjects].filter((x) => !newTopProjects.has(x)));
-      const enteringProjects = new Set([...newTopProjects].filter((x) => !topProjects.has(x)));
+      // Update topProjects and determine entering and leaving projects
+      setTopProjects((prevTopProjects) => {
+        const leavingProjects = new Set<string>(
+          [...prevTopProjects].filter((x) => !newTopProjects.has(x))
+        );
+        const enteringProjects = new Set<string>(
+          [...newTopProjects].filter((x) => !prevTopProjects.has(x))
+        );
   
-      setLeavingTopProjects(leavingProjects);
-      setEnteringTopProjects(enteringProjects);
+        setLeavingTopProjects(leavingProjects);
+        setEnteringTopProjects(enteringProjects);
   
-      setTopProjects(newTopProjects);
+        return newTopProjects;
+      });
   
       // Update current events
       const currentTimeStr = currentTime.toISOString().split('T')[0];
@@ -471,6 +477,56 @@ export const App: React.FC = () => {
       setLeavingTopProjects(new Set());
       setCurrentEvent(null);
     };
+
+    /**
+   * Memoized custom layer for line end labels.
+   */
+  const lineEndLabelsLayer = useCallback(
+    (props: CustomLayerProps) => (
+      <LineEndLabels
+        topProjects={topProjects}
+        enteringTopProjects={enteringTopProjects}
+        leavingTopProjects={leavingTopProjects}
+        newProjectIds={newProjectIds}
+        series={props.series}
+      />
+    ),
+    [topProjects, enteringTopProjects, leavingTopProjects, newProjectIds]
+  );
+
+    /**
+     * Memoized custom layer for event markers.
+     */
+    const eventMarkersLayer = useCallback(
+        (props: CustomLayerProps) => <EventMarkersLayer {...props} events={events} />,
+        [events]
+    );
+
+    /**
+   * Layers array memoized to update when custom layers change.
+   */
+  const layers: Layer[] = [
+    'grid',
+    'markers',
+    'areas',
+    'lines',
+    'points',
+    'axes',
+    // Custom layer for project labels at the end of lines
+    (props) => (
+      <LineEndLabels
+        topProjects={topProjects}
+        enteringTopProjects={enteringTopProjects}
+        leavingTopProjects={leavingTopProjects}
+        newProjectIds={newProjectIds}
+        series={props.series as ComputedSerie[]}
+      />
+    ),
+    // Custom layer for event markers
+    (props) => (
+      <EventMarkersLayer {...props} events={events} />
+    ),
+  ];
   
     return (
         <AppContainer>
@@ -551,28 +607,7 @@ export const App: React.FC = () => {
                   },
                 },
               }}
-              layers={[
-                'grid',
-                'markers',
-                'areas',
-                'lines',
-                'points',
-                'axes',
-                // Custom layer for project labels at the end of lines
-                (props) => (
-                    <LineEndLabels
-                      topProjects={topProjects}
-                      enteringTopProjects={enteringTopProjects}
-                      leavingTopProjects={leavingTopProjects}
-                      newProjectIds={newProjectIds}
-                      series={props.series as ComputedSerie[]} // Ensure correct typing
-                    />
-                  ),
-                // Custom layer for event markers
-                (props) => (
-                  <EventMarkersLayer {...props} events={events} />
-                ),
-              ]}
+              layers={layers}
             />
             {/* Event Modal */}
             {currentEvent && (
@@ -609,3 +644,14 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
+
+
+
+
+
+
+
