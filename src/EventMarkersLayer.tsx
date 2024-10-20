@@ -1,7 +1,7 @@
 /**
  * Component to render event markers on the chart.
  */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScaleTime, ScaleLinear } from 'd3-scale';
 
 /**
@@ -22,6 +22,7 @@ interface EventMarkersLayerProps {
   yScale: ScaleLinear<number, number>;
   innerHeight: number;
   events: Event[];
+  currentTime: Date;
   onEventRendered: (event: Event | null) => void;
 }
 
@@ -33,33 +34,48 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
   xScale,
   innerHeight,
   events,
+  currentTime,
   onEventRendered,
 }) => {
-  const lastRenderedEventRef = useRef<Event | null>(null);
+  const [renderedEventIndices, setRenderedEventIndices] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    const currentDate = new Date(xScale.invert(xScale.range()[1]));
+    console.log('Current time:', currentTime);
+    console.log('All events:', events);
+    console.log('Previously rendered event indices:', Array.from(renderedEventIndices));
 
-    // Find the events that have occurred up to the current date
-    const pastEvents = events.filter(
-      (event) => new Date(event.date) <= currentDate
+    const currentDate = currentTime;
+
+    // Find the events that have occurred up to the current date and haven't been rendered yet
+    const newPastEvents = events.filter(
+      (event, index) => new Date(event.date) <= currentDate && !renderedEventIndices.has(index)
     );
 
-    // If there are any past events, get the most recent one
-    const renderedEvent =
-      pastEvents.length > 0 ? pastEvents[pastEvents.length - 1] : null;
+    console.log('New past events not yet rendered:', newPastEvents);
 
-    // If the rendered event has changed, update it
-    if (renderedEvent !== lastRenderedEventRef.current) {
-      lastRenderedEventRef.current = renderedEvent;
-      onEventRendered(renderedEvent);
+    if (newPastEvents.length > 0) {
+      setRenderedEventIndices(prev => {
+        const newSet = new Set(prev);
+        newPastEvents.forEach((event, i) => {
+          const eventIndex = events.indexOf(event);
+          newSet.add(eventIndex);
+          console.log(`Firing onEventRendered for event:`, event);
+          onEventRendered(event);
+        });
+        console.log('Updated rendered event indices:', Array.from(newSet));
+        return newSet;
+      });
     }
-  }, [xScale, events, onEventRendered]);
+  }, [currentTime, events, onEventRendered, renderedEventIndices]);
 
   return (
     <g>
       {events.map((event, index) => {
-        const x = xScale(new Date(event.date));
+        const eventDate = new Date(event.date);
+        if (eventDate > currentTime) {
+          return null; // Do not render future events
+        }
+        const x = xScale(eventDate);
         if (x < 0 || x > xScale.range()[1]) {
           return null;
         }

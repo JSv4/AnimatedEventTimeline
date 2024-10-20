@@ -63,7 +63,7 @@ import projectDataJson from './assets/test_data.json';
  */
 const events: Event[] = [
     {
-      date: '2015-11-09',
+      date: '2014-01-09',
       title: 'TensorFlow Released',
       description: 'Google releases TensorFlow as an open-source project.',
       logoUrl:
@@ -261,6 +261,12 @@ export const App: React.FC = () => {
     const [eventTimerId, setEventTimerId] = useState<NodeJS.Timeout | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const eventTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    useEffect(() => {
+        if (currentEvent) {
+            console.log('currentEvent', currentEvent);
+        }
+    }, [currentEvent])
 
     useEffect(() => {
         if (timeline.length > 0 && data.length > 0) {
@@ -480,21 +486,6 @@ export const App: React.FC = () => {
         return newTopProjects;
       });
   
-      // Update current events
-    //   const currentTimeStr = currentTime.toISOString().split('T')[0];
-    //   const currentTimeEvents = events.filter(
-    //     (event) => event.date === currentTimeStr
-    //   );
-    //   if (currentTimeEvents.length > 0) {
-    //     setCurrentEvent(currentTimeEvents[0]); // Show one event at a time
-    //     // Hide the event after some time
-    //     setTimeout(() => {
-    //       setCurrentEvent(null);
-    //     }, 5000); // Display event for 5 seconds
-    //   } else {
-    //     setCurrentEvent(null);
-    //   }
-  
       // Adjust x-axis tick values based on time index
       if (timeIndex > timeline.length * 0.8) {
         // At the end of the timeline, show yearly ticks
@@ -557,35 +548,43 @@ export const App: React.FC = () => {
     [topProjects, enteringTopProjects, leavingTopProjects, newProjectIds]
   );
 
-    /**
+   /**
    * Handles the rendering of events.
    * @param event - The current event to display or null.
    */
-  const handleEventRendered = useCallback(
-    (event: Event | null) => {
-      if (event) {
-        // If the event has changed, show the modal
-        if (currentEvent?.date !== event.date) {
-          setCurrentEvent(event);
-          setShowModal(true);
+  const handleEventRendered = (event: Event | null) => {
+    if (event) {
+      // If the event has changed, show the modal
+      console.log('handleEventRendered', event);
+      if (
+        !currentEvent ||
+        currentEvent.date !== event.date
+      ) {
+        setCurrentEvent(event);
+        setShowModal(true);
 
-          // Clear any existing timer
-          if (eventTimerRef.current) {
-            clearTimeout(eventTimerRef.current);
-          }
-
-          // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
-          eventTimerRef.current = setTimeout(() => {
-            setShowModal(false);
-            setCurrentEvent(null); // Optionally clear currentEvent here
-          }, EVENT_DISPLAY_DURATION);
+        // Clear any existing timer
+        if (eventTimerRef.current) {
+          clearTimeout(eventTimerRef.current);
         }
-      } else {
-        // Do nothing when event is null
+
+        // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
+        eventTimerRef.current = setTimeout(() => {
+          setShowModal(false);
+          setCurrentEvent(null); // Reset currentEvent here
+        }, EVENT_DISPLAY_DURATION);
       }
-    },
-    [currentEvent]
-  );
+    } else {
+      // No current event, hide the modal immediately
+      setShowModal(false);
+      setCurrentEvent(null);
+
+      // Clear any existing timer
+      if (eventTimerRef.current) {
+        clearTimeout(eventTimerRef.current);
+      }
+    }
+  };
 
   // Clean up the timer when the component unmounts
   useEffect(() => {
@@ -601,10 +600,11 @@ export const App: React.FC = () => {
         <EventMarkersLayer
           {...props}
           events={events}
+          currentTime={timeline[currentTimeIndex]}
           onEventRendered={handleEventRendered}
         />
       ),
-      [events, handleEventRendered]
+      [events, handleEventRendered, timeline, currentTimeIndex]
     );
 
     /**
@@ -758,5 +758,12 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
+
+
+
 
 
