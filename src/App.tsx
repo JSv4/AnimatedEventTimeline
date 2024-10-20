@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import * as d3 from 'd3';
 import { LineEndLabels } from './LineEndLabels';
 import EventMarkersLayer from './EventMarkersLayer';
+import { Switch } from './Switch';
 
 /**
  * Represents the star history of a project.
@@ -235,6 +236,26 @@ const Heading = styled.h1`
 // Number of milliseconds to display the event modal
 const EVENT_DISPLAY_DURATION = 5000; // Adjust 'n' seconds here
 
+// Add this new interface
+interface AppState {
+  isPlaying: boolean;
+  currentTimeIndex: number;
+  pauseOnEvents: boolean;
+}
+
+// Add this new styled component
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+`;
+
+const ToggleLabel = styled.span`
+  margin-right: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+`;
+
 /**
  * Main application component.
  * Displays an animated line chart of GitHub star counts over time
@@ -261,6 +282,12 @@ export const App: React.FC = () => {
     const [eventTimerId, setEventTimerId] = useState<NodeJS.Timeout | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const eventTimerRef = useRef<NodeJS.Timeout | null>(null);
+    const [pauseOnEvents, setPauseOnEvents] = useState<boolean>(false);
+    const [appState, setAppState] = useState<AppState>({
+      isPlaying: false,
+      currentTimeIndex: 0,
+      pauseOnEvents: false,
+    });
 
     useEffect(() => {
         if (currentEvent) {
@@ -499,18 +526,23 @@ export const App: React.FC = () => {
      * Handles play and pause functionality.
      */
     const handlePlayPause = () => {
-        if (!isPlaying) {
-          if (timeline.length === 0) {
-            return;
-          }
+      setIsPlaying((prevIsPlaying) => {
+        const newIsPlaying = !prevIsPlaying;
+
+        if (newIsPlaying) {
           if (currentTimeIndex >= timeline.length - 1) {
             handleReset();
+            return true; // Start playing from the beginning
           }
-          // Update visible data when starting to play
-          updateVisibleData(currentTimeIndex);
+          // If resuming, hide the event card
+          if (showModal) {
+            setShowModal(false);
+            setCurrentEvent(null);
+          }
         }
-        setIsPlaying(!isPlaying);
-      };
+        return newIsPlaying;
+      });
+    };
   
     /**
      * Resets the animation to the beginning.
@@ -518,18 +550,14 @@ export const App: React.FC = () => {
     const handleReset = () => {
       setIsPlaying(false);
       setCurrentTimeIndex(0);
-      setVisibleData(
-        data.map((serie) => ({
-          ...serie,
-          data: [],
-        }))
-      );
+      setVisibleData(data.map(serie => ({ ...serie, data: [] })));
       setVisibleProjects(new Set());
       setAggregateStars(0);
       setTopProjects(new Set());
       setEnteringTopProjects(new Set());
       setLeavingTopProjects(new Set());
       setCurrentEvent(null);
+      setShowModal(false);
     };
 
     /**
@@ -554,8 +582,6 @@ export const App: React.FC = () => {
    */
   const handleEventRendered = (event: Event | null) => {
     if (event) {
-      // If the event has changed, show the modal
-      console.log('handleEventRendered', event);
       if (
         !currentEvent ||
         currentEvent.date !== event.date
@@ -568,18 +594,21 @@ export const App: React.FC = () => {
           clearTimeout(eventTimerRef.current);
         }
 
-        // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
-        eventTimerRef.current = setTimeout(() => {
-          setShowModal(false);
-          setCurrentEvent(null); // Reset currentEvent here
-        }, EVENT_DISPLAY_DURATION);
+        // Pause if pauseOnEvents is true
+        if (pauseOnEvents) {
+          setIsPlaying(false);
+        } else {
+          // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
+          eventTimerRef.current = setTimeout(() => {
+            setShowModal(false);
+            setCurrentEvent(null);
+          }, EVENT_DISPLAY_DURATION);
+        }
       }
     } else {
-      // No current event, hide the modal immediately
       setShowModal(false);
       setCurrentEvent(null);
 
-      // Clear any existing timer
       if (eventTimerRef.current) {
         clearTimeout(eventTimerRef.current);
       }
@@ -621,6 +650,19 @@ export const App: React.FC = () => {
     eventMarkersLayer,
   ];
   
+    // Add this new function
+    const handleTogglePauseOnEvents = () => {
+      setAppState(prevState => ({
+        ...prevState,
+        pauseOnEvents: !prevState.pauseOnEvents,
+      }));
+    };
+
+    // Add a function to handle toggle change
+    const handlePauseOnEventsToggle = () => {
+      setPauseOnEvents(prev => !prev);
+    };
+
     return (
         <AppContainer>
           <DashboardCard>
@@ -747,7 +789,14 @@ export const App: React.FC = () => {
                   <StatLabel>Total Stars</StatLabel>
                 </StatItem>
               </StatsContainer>
-              <div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ToggleContainer>
+                  <ToggleLabel>Pause on events</ToggleLabel>
+                  <Switch
+                    checked={pauseOnEvents}
+                    onChange={handlePauseOnEventsToggle}
+                  />
+                </ToggleContainer>
                 <Button onClick={handlePlayPause} marginRight primary>
                   {isPlaying ? 'Pause' : 'Play'}
                 </Button>
@@ -758,6 +807,10 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
 
 
 
