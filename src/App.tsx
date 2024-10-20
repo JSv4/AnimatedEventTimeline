@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { ResponsiveLine, Serie, CustomLayerProps, ComputedSerie, Layer } from '@nivo/line';
 import styled from 'styled-components';
 
@@ -198,7 +198,10 @@ const Modal = styled.div`
   display: flex;
   align-items: center;
   z-index: 1000;
+  width: 50%;
+  height: 50%;
   max-width: 80%;
+  max-height: 80%;
 `;
 
 const ModalImage = styled.img`
@@ -229,6 +232,9 @@ const Heading = styled.h1`
   font-size: 2.5rem;
 `;
 
+// Number of milliseconds to display the event modal
+const EVENT_DISPLAY_DURATION = 5000; // Adjust 'n' seconds here
+
 /**
  * Main application component.
  * Displays an animated line chart of GitHub star counts over time
@@ -252,6 +258,9 @@ export const App: React.FC = () => {
     const [enteringTopProjects, setEnteringTopProjects] = useState<Set<string>>(new Set());
     const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
     const [projectData, setProjectData] = useState<ProjectData[]>([]);
+    const [eventTimerId, setEventTimerId] = useState<NodeJS.Timeout | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const eventTimerRef = useRef<NodeJS.Timeout | null>(null);
 
     useEffect(() => {
         if (timeline.length > 0 && data.length > 0) {
@@ -472,19 +481,19 @@ export const App: React.FC = () => {
       });
   
       // Update current events
-      const currentTimeStr = currentTime.toISOString().split('T')[0];
-      const currentTimeEvents = events.filter(
-        (event) => event.date === currentTimeStr
-      );
-      if (currentTimeEvents.length > 0) {
-        setCurrentEvent(currentTimeEvents[0]); // Show one event at a time
-        // Hide the event after some time
-        setTimeout(() => {
-          setCurrentEvent(null);
-        }, 5000); // Display event for 5 seconds
-      } else {
-        setCurrentEvent(null);
-      }
+    //   const currentTimeStr = currentTime.toISOString().split('T')[0];
+    //   const currentTimeEvents = events.filter(
+    //     (event) => event.date === currentTimeStr
+    //   );
+    //   if (currentTimeEvents.length > 0) {
+    //     setCurrentEvent(currentTimeEvents[0]); // Show one event at a time
+    //     // Hide the event after some time
+    //     setTimeout(() => {
+    //       setCurrentEvent(null);
+    //     }, 5000); // Display event for 5 seconds
+    //   } else {
+    //     setCurrentEvent(null);
+    //   }
   
       // Adjust x-axis tick values based on time index
       if (timeIndex > timeline.length * 0.8) {
@@ -549,11 +558,53 @@ export const App: React.FC = () => {
   );
 
     /**
-     * Memoized custom layer for event markers.
-     */
+   * Handles the rendering of events.
+   * @param event - The current event to display or null.
+   */
+  const handleEventRendered = useCallback(
+    (event: Event | null) => {
+      if (event) {
+        // If the event has changed, show the modal
+        if (currentEvent?.date !== event.date) {
+          setCurrentEvent(event);
+          setShowModal(true);
+
+          // Clear any existing timer
+          if (eventTimerRef.current) {
+            clearTimeout(eventTimerRef.current);
+          }
+
+          // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
+          eventTimerRef.current = setTimeout(() => {
+            setShowModal(false);
+            setCurrentEvent(null); // Optionally clear currentEvent here
+          }, EVENT_DISPLAY_DURATION);
+        }
+      } else {
+        // Do nothing when event is null
+      }
+    },
+    [currentEvent]
+  );
+
+  // Clean up the timer when the component unmounts
+  useEffect(() => {
+    return () => {
+      if (eventTimerRef.current) {
+        clearTimeout(eventTimerRef.current);
+      }
+    };
+  }, []);
+
     const eventMarkersLayer = useCallback(
-        (props: CustomLayerProps) => <EventMarkersLayer {...props} events={events} />,
-        [events]
+      (props: CustomLayerProps) => (
+        <EventMarkersLayer
+          {...props}
+          events={events}
+          onEventRendered={handleEventRendered}
+        />
+      ),
+      [events, handleEventRendered]
     );
 
     /**
@@ -566,20 +617,8 @@ export const App: React.FC = () => {
     'lines',
     'points',
     'axes',
-    // Custom layer for project labels at the end of lines
-    (props) => (
-      <LineEndLabels
-        topProjects={topProjects}
-        enteringTopProjects={enteringTopProjects}
-        leavingTopProjects={leavingTopProjects}
-        newProjectIds={newProjectIds}
-        series={props.series as ComputedSerie[]}
-      />
-    ),
-    // Custom layer for event markers
-    (props) => (
-      <EventMarkersLayer {...props} events={events} />
-    ),
+    lineEndLabelsLayer,
+    eventMarkersLayer,
   ];
   
     return (
@@ -679,7 +718,8 @@ export const App: React.FC = () => {
                 }}
                 layers={layers}
               />
-              {currentEvent && (
+              {/* Modal remains within ChartContainer */}
+              {showModal && currentEvent && (
                 <Modal>
                   {currentEvent.logoUrl && (
                     <ModalImage
@@ -718,15 +758,5 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
-
-
-
-
-
-
-
-
-
-
 
 

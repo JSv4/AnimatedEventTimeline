@@ -1,7 +1,7 @@
 /**
  * Component to render event markers on the chart.
  */
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScaleTime, ScaleLinear } from 'd3-scale';
 
 /**
@@ -22,6 +22,7 @@ interface EventMarkersLayerProps {
   yScale: ScaleLinear<number, number>;
   innerHeight: number;
   events: Event[];
+  onEventRendered: (event: Event | null) => void;
 }
 
 /**
@@ -32,7 +33,29 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
   xScale,
   innerHeight,
   events,
+  onEventRendered,
 }) => {
+  const lastRenderedEventRef = useRef<Event | null>(null);
+
+  useEffect(() => {
+    const currentDate = new Date(xScale.invert(xScale.range()[1]));
+
+    // Find the events that have occurred up to the current date
+    const pastEvents = events.filter(
+      (event) => new Date(event.date) <= currentDate
+    );
+
+    // If there are any past events, get the most recent one
+    const renderedEvent =
+      pastEvents.length > 0 ? pastEvents[pastEvents.length - 1] : null;
+
+    // If the rendered event has changed, update it
+    if (renderedEvent !== lastRenderedEventRef.current) {
+      lastRenderedEventRef.current = renderedEvent;
+      onEventRendered(renderedEvent);
+    }
+  }, [xScale, events, onEventRendered]);
+
   return (
     <g>
       {events.map((event, index) => {

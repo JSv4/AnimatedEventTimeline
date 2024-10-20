@@ -1,7 +1,7 @@
 // src/LineEndLabels.tsx
 
 import React from 'react';
-import { ComputedSerie, ComputedDatum } from '@nivo/line';
+import { ComputedSerie } from '@nivo/line';
 
 /**
  * Props for LineEndLabels component.
@@ -11,7 +11,7 @@ interface LineEndLabelsProps {
   enteringTopProjects: Set<string>;
   leavingTopProjects: Set<string>;
   newProjectIds: Set<string>;
-  series: ComputedSerie[];
+  series: readonly ComputedSerie[];
 }
 
 /**
@@ -22,6 +22,7 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
   topProjects,
   enteringTopProjects,
   leavingTopProjects,
+  newProjectIds,
   series,
 }) => {
   // Collect label data
