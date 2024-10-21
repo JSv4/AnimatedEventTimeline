@@ -294,6 +294,8 @@ const ToggleLabel = styled.span`
   color: #666;
 `;
 
+
+
 /**
  * Main application component.
  * Displays an animated line chart of GitHub star counts over time
@@ -301,6 +303,9 @@ const ToggleLabel = styled.span`
  */
 export const App: React.FC = () => {
     // State variables
+    const [initialMaxY, setInitialMaxY] = useState<number>(100);
+    const [currentMaxY, setCurrentMaxY] = useState<number>(100);
+
     const [data, setData] = useState<Serie[]>([]);
     const [timeline, setTimeline] = useState<Date[]>([]);
     const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0);
@@ -456,6 +461,17 @@ export const App: React.FC = () => {
           setTimeline(timeline);
           setVisibleData(seriesData); // Use full data for testing
           setVisibleProjects(new Set(seriesData.map((serie) => String(serie.id))));
+
+          // Compute the initial maximum y-value
+          let maxY = 0;
+          seriesData.forEach((serie) => {
+            const firstPoint = serie.data[0];
+            const yValue = typeof firstPoint?.y === 'number' ? firstPoint.y : 0;
+            if (yValue > maxY) {
+              maxY = yValue;
+            }
+          });
+          setInitialMaxY(maxY * 2); // Set initial max to 2X the first point
         }
       }, [projectData, processData]);
   
@@ -521,7 +537,20 @@ export const App: React.FC = () => {
         return sum + (typeof lastPoint?.y === 'number' ? lastPoint.y : 0);
       }, 0);
       setAggregateStars(Math.round(totalStars));
-  
+
+       // Compute the current maximum y-value
+    let maxY = initialMaxY; // Start with initialMaxY
+    newVisibleData.forEach((serie) => {
+    const lastPoint = serie.data[serie.data.length - 1];
+    const yValue = typeof lastPoint?.y === 'number' ? lastPoint.y : 0;
+    if (yValue > maxY) {
+        maxY = yValue;
+    }
+    });
+
+    // Optionally add some padding to maxY
+    setCurrentMaxY(maxY * 1.1); // Increase maxY by 10% for padding
+
       // Identify top five projects
       const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
         const lastPoint = serie.data[serie.data.length - 1];
@@ -609,6 +638,7 @@ export const App: React.FC = () => {
         leavingTopProjects={leavingTopProjects}
         newProjectIds={newProjectIds}
         series={props.series}
+        innerWidth={props.innerWidth} // Passed here
       />
     ),
     [topProjects, enteringTopProjects, leavingTopProjects, newProjectIds]
@@ -708,7 +738,7 @@ export const App: React.FC = () => {
             <ChartContainer>
               <ResponsiveLine
                 data={visibleData}
-                margin={{ top: 30, right: 110, bottom: 50, left: 60 }}
+                margin={{ top: 30, right: 110, bottom: 50, left: 90 }} // Increased left margin from 60 to 90
                 xScale={{
                   type: 'time',
                   format: '%Y-%m-%d',
@@ -719,7 +749,7 @@ export const App: React.FC = () => {
                 yScale={{
                   type: 'linear',
                   min: 0,
-                  max: 'auto',
+                  max: currentMaxY, // Use the computed initial maximum
                   stacked: false,
                   reverse: false,
                 }}
@@ -751,7 +781,7 @@ export const App: React.FC = () => {
                   background: '#ffffff',
                   text: {
                     fill: '#333333',
-                    fontSize: 12,
+                    fontSize: 14, // Increased base font size
                   },
                   axis: {
                     domain: {
@@ -767,11 +797,12 @@ export const App: React.FC = () => {
                       },
                       text: {
                         fill: '#666666',
+                        fontSize: 14, // Increased tick label font size
                       },
                     },
                     legend: {
                       text: {
-                        fontSize: 12,
+                        fontSize: 16, // Increased legend font size
                         fill: '#333333',
                         fontWeight: 'bold',
                       },
@@ -786,6 +817,7 @@ export const App: React.FC = () => {
                   legends: {
                     text: {
                       fill: '#333333',
+                      fontSize: 14, // Increased legend text size
                     },
                   },
                   tooltip: {
@@ -838,6 +870,12 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
+
+
 
 
 

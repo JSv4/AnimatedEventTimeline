@@ -40,10 +40,6 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
   const [renderedEventIndices, setRenderedEventIndices] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    console.log('Current time:', currentTime);
-    console.log('All events:', events);
-    console.log('Previously rendered event indices:', Array.from(renderedEventIndices));
-
     const currentDate = currentTime;
 
     // Find the events that have occurred up to the current date and haven't been rendered yet
@@ -51,7 +47,6 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
       (event, index) => new Date(event.date) <= currentDate && !renderedEventIndices.has(index)
     );
 
-    console.log('New past events not yet rendered:', newPastEvents);
 
     if (newPastEvents.length > 0) {
       setRenderedEventIndices(prev => {
@@ -59,10 +54,8 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
         newPastEvents.forEach((event, i) => {
           const eventIndex = events.indexOf(event);
           newSet.add(eventIndex);
-          console.log(`Firing onEventRendered for event:`, event);
           onEventRendered(event);
         });
-        console.log('Updated rendered event indices:', Array.from(newSet));
         return newSet;
       });
     }
@@ -90,7 +83,7 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
             <text
               y={-10}
               textAnchor="middle"
-              style={{ fontSize: 12, fill: '#000' }}
+              style={{ fontSize: 16, fill: '#000' }} // Increased font size
             >
               {event.title}
             </text>

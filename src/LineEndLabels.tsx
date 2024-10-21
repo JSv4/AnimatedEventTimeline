@@ -1,6 +1,6 @@
 // src/LineEndLabels.tsx
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { ComputedSerie } from '@nivo/line';
 
 /**
@@ -12,6 +12,7 @@ interface LineEndLabelsProps {
   leavingTopProjects: Set<string>;
   newProjectIds: Set<string>;
   series: readonly ComputedSerie[];
+  innerWidth: number; // Added to access the chart's width
 }
 
 /**
@@ -24,9 +25,39 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
   leavingTopProjects,
   newProjectIds,
   series,
+  innerWidth
 }) => {
-  // Collect label data
-  const labels = series
+  const [labelWidths, setLabelWidths] = useState<Map<string, number>>(new Map());
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  useEffect(() => {
+    if (svgRef.current) {
+      const svg = svgRef.current;
+      const newLabelWidths = new Map<string, number>();
+
+      topProjects.forEach(projectId => {
+        const serie = series.find(s => String(s.id) === projectId);
+        const lastDataPoint = serie?.data.slice(-1)[0];
+
+        // Safely access the y value
+        const yValue = lastDataPoint?.data.y;
+        const yNumber = typeof yValue === 'number' ? yValue : 0;
+
+        const labelText = `${projectId} (${Math.round(yNumber)})`;
+
+        const tempText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        tempText.textContent = labelText;
+        svg.appendChild(tempText);
+        const width = tempText.getBBox().width;
+        newLabelWidths.set(projectId, width);
+        svg.removeChild(tempText);
+      });
+
+      setLabelWidths(newLabelWidths);
+    }
+  }, [topProjects, series]);
+
+  const labels: LabelData[] = series
     ?.filter((line) => topProjects.has(String(line.id)))
     .map((line) => {
       const linePoints = line.data;
@@ -37,13 +68,15 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
       if (!lastPoint) {
         return null;
       }
-      let x = lastPoint.position.x;
-      let y = lastPoint.position.y;
+      const x = innerWidth;
+      const y = lastPoint.position.y;
       const seriesId = String(line.id);
       const isEntering = enteringTopProjects.has(seriesId);
       const isLeaving = leavingTopProjects.has(seriesId);
       const fillColor = line.color ?? '#000';
       const latestStarCount = Math.round(lastPoint.data.y as number);
+      const label = `${seriesId} (${latestStarCount})`;
+      const width = labelWidths.get(seriesId) || 0;
 
       if (isNaN(x) || isNaN(y)) {
         return null;
@@ -52,53 +85,52 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
       return {
         x,
         y,
-        label: `${seriesId} (${latestStarCount})`,
+        label,
         fillColor,
         isEntering,
         isLeaving,
+        width,
       };
     })
-    .filter((label): label is NonNullable<typeof label> => label !== null);
-  
-  // Adjust y positions to prevent overlap
+    .filter((label): label is LabelData => label !== null);
+
   const sortedLabels = labels.sort((a, b) => a.y - b.y);
   const labelHeight = 16; // approximate label height
   const minGap = 4; // minimum gap between labels
+  const chartHeight = 500; // Chart height set in App.tsx
 
-   // Ensure labels stay within chart bounds
-   const chartHeight = 500; // Chart height set in App.tsx
-   for (let i = 1; i < sortedLabels.length; i++) {
-     const prev = sortedLabels[i - 1];
-     const curr = sortedLabels[i];
-     const gap = prev.y + labelHeight + minGap - curr.y;
-     if (gap > 0) {
-       curr.y += gap;
-       // Ensure curr.y does not exceed chartHeight
-       curr.y = Math.min(curr.y, chartHeight - labelHeight);
-     }
-   }
+  for (let i = 1; i < sortedLabels.length; i++) {
+    const prev = sortedLabels[i - 1];
+    const curr = sortedLabels[i];
+    const gap = prev.y + labelHeight + minGap - curr.y;
+    if (gap > 0) {
+      curr.y += gap;
+      // Ensure curr.y does not exceed chartHeight
+      curr.y = Math.min(curr.y, chartHeight - labelHeight);
+    }
+  }
 
   return (
-    <g>
+    <g ref={svgRef}>
       {sortedLabels.map((labelData) => {
         const { x, y, label, fillColor, isEntering, isLeaving } = labelData;
 
-        // Determine transform for entering labels
         const transform = isEntering ? 'scale(1.5)' : 'scale(1)';
 
         return (
           <text
             key={label}
-            x={x + 5}
+            x={x - 5} // Subtract 5 for a small gap between the line end and the label
             y={y}
+            textAnchor="end" // Align the text to the right
             style={{
               fill: fillColor,
-              fontSize: 14,
+              fontSize: 16, // Increased font size from 14 to 16
               fontWeight: 'bold',
               opacity: isLeaving ? 0 : 1,
               transform,
               transition: 'opacity 0.5s, transform 0.5s',
-              transformOrigin: 'left center',
+              transformOrigin: 'right center',
             }}
           >
             {label}
@@ -108,3 +140,13 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
     </g>
   );
 };
+
+interface LabelData {
+  x: number;
+  y: number;
+  label: string;
+  fillColor: string;
+  isEntering: boolean;
+  isLeaving: boolean;
+  width: number;
+}
