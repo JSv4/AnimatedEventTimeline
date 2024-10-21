@@ -191,33 +191,36 @@ const AppContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
-  padding: 2rem;
+  background: linear-gradient(135deg, #f6f8fa 0%, #e9ecef 100%);
+  padding: 1.5rem;
   box-sizing: border-box;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  overflow: hidden;
 `;
 
 const DashboardCard = styled.div`
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 `;
 
 const ChartContainer = styled.div`
   flex: 1;
   min-height: 0;
   position: relative;
-  border-radius: 8px;
+  border-radius: 16px;
   overflow: hidden;
-  background-color: #f8f9fa;
+  background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 `;
 
 const ControlsContainer = styled.div`
-  margin-top: 2rem;
+  margin-top: 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -226,25 +229,27 @@ const ControlsContainer = styled.div`
 
 const StatsContainer = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
 `;
 
 const StatItem = styled.div`
-  background-color: #f1f3f5;
-  border-radius: 8px;
-  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f1f3f5 100%);
+  border-radius: 12px;
+  padding: 0.75rem 1.25rem;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 `;
 
 const StatValue = styled.h3`
   margin: 0;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   color: #343a40;
+  font-weight: 600;
 `;
 
 const StatLabel = styled.p`
   margin: 0.25rem 0 0;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: #6c757d;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -258,28 +263,31 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = styled.button.withConfig({
   shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
 })<ButtonProps>`
-  background-color: ${(props) => (props.primary ? '#4263eb' : '#ffffff')};
+  background: ${(props) => (props.primary ? 'linear-gradient(135deg, #4263eb 0%, #3b5bdb 100%)' : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)')};
   color: ${(props) => (props.primary ? '#ffffff' : '#4263eb')};
-  border: 2px solid #4263eb;
+  border: none;
   padding: 0.75rem 1.5rem;
   margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 12px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background-color: ${(props) => (props.primary ? '#3b5bdb' : '#e7f5ff')};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   }
 `;
 
 const Heading = styled.h1`
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   color: #212529;
-  font-size: 2.5rem;
+  font-size: 2.25rem;
   font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 const ToggleContainer = styled.div`
@@ -287,11 +295,15 @@ const ToggleContainer = styled.div`
   flex-direction: row;
   align-items: center;
   margin-right: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
 const ToggleLabel = styled.span`
   margin-right: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #495057;
   font-weight: 500;
 `;
@@ -820,10 +832,11 @@ export const App: React.FC = () => {
                 motionConfig="gentle"
                 colors={(serie) => colorScale(serie.id as string)}
                 theme={{
-                  background: '#f8f9fa',
+                  background: 'transparent',
                   text: {
                     fill: '#495057',
-                    fontSize: 14,
+                    fontSize: 12,
+                    fontWeight: 500,
                   },
                   axis: {
                     domain: {
@@ -839,14 +852,14 @@ export const App: React.FC = () => {
                       },
                       text: {
                         fill: '#495057',
-                        fontSize: 12,
+                        fontSize: 11,
                       },
                     },
                     legend: {
                       text: {
-                        fontSize: 14,
+                        fontSize: 12,
                         fill: '#343a40',
-                        fontWeight: 'bold',
+                        fontWeight: 600,
                       },
                     },
                   },
@@ -859,14 +872,14 @@ export const App: React.FC = () => {
                   legends: {
                     text: {
                       fill: '#495057',
-                      fontSize: 12,
+                      fontSize: 11,
                     },
                   },
                   tooltip: {
                     container: {
                       background: '#ffffff',
                       boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                      borderRadius: '6px',
+                      borderRadius: '8px',
                       padding: '8px 12px',
                     },
                   },
@@ -913,6 +926,7 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
 
 
 
