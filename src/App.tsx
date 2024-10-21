@@ -6,6 +6,7 @@ import * as d3 from 'd3';
 import { LineEndLabels } from './LineEndLabels';
 import EventMarkersLayer from './EventMarkersLayer';
 import { Switch } from './Switch';
+import { EventCard } from './EventCard';
 
 /**
  * Represents the star history of a project.
@@ -109,26 +110,31 @@ return date.toISOString().split('T')[0];
 
 // Updated styled components
 const AppContainer = styled.div`
-  min-height: 100vh;
+  height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   background-color: #f0f2f5;
-  padding: 2rem;
+  padding: 1rem;
   box-sizing: border-box;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  overflow: hidden;
 `;
 
 const DashboardCard = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  margin-bottom: 2rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const ChartContainer = styled.div`
-  width: 100%;
-  height: 500px;
+  flex: 1;
+  min-height: 0;
   position: relative;
 `;
 
@@ -187,50 +193,82 @@ const Button = styled.button.withConfig({
   }
 `;
 
+// Updated styled components for the event card
 const Modal = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   display: flex;
-  align-items: center;
   z-index: 1000;
-  width: 50%;
-  height: 50%;
-  max-width: 80%;
-  max-height: 80%;
-`;
-
-const ModalImage = styled.img`
-  width: 80px;
-  height: 80px;
-  margin-right: 1.5rem;
-  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
 `;
 
 const ModalContent = styled.div`
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+`;
+
+const ModalHeader = styled.div`
+  background-color: #f8f9fa;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #e9ecef;
+`;
+
+const ModalImage = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+  border-radius: 8px;
 `;
 
 const ModalTitle = styled.h2`
-  margin: 0 0 0.5rem 0;
+  margin: 0;
   color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
 `;
 
-const ModalDescription = styled.p`
+const ModalBody = styled.div`
+  padding: 1rem;
+  overflow-y: auto;
+`;
+
+const ModalDescription = styled.div`
   margin: 0;
-  color: #666;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+
+  p {
+    margin-bottom: 0.75rem;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const Heading = styled.h1`
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   text-align: center;
   color: #333;
-  font-size: 2.5rem;
+  font-size: 1.75rem;
 `;
 
 // Number of milliseconds to display the event modal
@@ -670,7 +708,7 @@ export const App: React.FC = () => {
             <ChartContainer>
               <ResponsiveLine
                 data={visibleData}
-                margin={{ top: 50, right: 200, bottom: 80, left: 80 }}
+                margin={{ top: 30, right: 110, bottom: 50, left: 60 }}
                 xScale={{
                   type: 'time',
                   format: '%Y-%m-%d',
@@ -760,20 +798,13 @@ export const App: React.FC = () => {
                 }}
                 layers={layers}
               />
-              {/* Modal remains within ChartContainer */}
               {showModal && currentEvent && (
-                <Modal>
-                  {currentEvent.logoUrl && (
-                    <ModalImage
-                      src={currentEvent.logoUrl}
-                      alt={currentEvent.title}
-                    />
-                  )}
-                  <ModalContent>
-                    <ModalTitle>{currentEvent.title}</ModalTitle>
-                    <ModalDescription>{currentEvent.description}</ModalDescription>
-                  </ModalContent>
-                </Modal>
+                <EventCard
+                  title={currentEvent.title}
+                  description={currentEvent.description}
+                  logoUrl={currentEvent.logoUrl || ''}
+                  date={currentEvent.date} // Ensure this is a string
+                />
               )}
             </ChartContainer>
             <ControlsContainer>
@@ -807,6 +838,11 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
+
 
 
 
