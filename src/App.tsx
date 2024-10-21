@@ -74,7 +74,7 @@ const events: Event[] = [
         date: "2014-08-01", // Month is approximate
         title: "Ironclad Founded",
         description: "Jason Boehmig and Cai GoGwilt found Ironclad, a contract lifecycle management platform, in San Francisco, California. The company aims to streamline contract creation and management processes for legal and business teams.",
-        logoUrl: "https://db-fastly.legal.io/product_logo/5eec3dc86ae835000ec7a01d/1688063430.png?auto=webp"
+        logoUrl: "https://cdn.prod.website-files.com/6640cd28f51f13175e577c05/664e00971d6823ba36c59860_fb865d17-ccaf-50c6-8599-360d05eb0b1f.svg"
     },
     {
         date: "2015-05-19",
