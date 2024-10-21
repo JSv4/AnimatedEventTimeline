@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { ResponsiveLine, Serie, CustomLayerProps, ComputedSerie, Layer } from '@nivo/line';
+import { ResponsiveLine, Serie, CustomLayerProps, Layer } from '@nivo/line';
 import styled from 'styled-components';
 
 import * as d3 from 'd3';
@@ -51,7 +51,7 @@ x: Date;
 y: number;
 }
 
-import projectDataJson from './assets/test_data.json';
+import projectDataJson from './assets/legaltech_focused.json';
 
 /**
  * Sample data for demonstration purposes.
@@ -67,94 +67,110 @@ const events: Event[] = [
     {
         date: "2011-01-01",
         title: "Kira Systems Founded",
-        description: "Noah Waisberg and Dr. Alexander Hudek found Kira Systems, a machine learning contract analysis company, in Toronto, Canada[5].",
-        logoUrl: "https://kirasystems.com/favicon.ico"
-    },
-    {
-        date: '2013-05-29',
-        title: 'React Released',
-        description: 'Facebook open-sources React library.',
-        logoUrl:
-            'https://raw.githubusercontent.com/facebook/react/master/fixtures/dom/public/react-logo.svg',
-    },
-    {
-        date: '2014-01-09',
-        title: 'TensorFlow Released',
-        description: 'Google releases TensorFlow as an open-source project.',
-        logoUrl:
-            'https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/logos/pngs/TF_FullColor_Icon.png',
+        description: "Noah Waisberg and Dr. Alexander Hudek found Kira Systems, a machine learning contract analysis company, in Toronto, Canada.",
+        logoUrl: "https://mir-s3-cdn-cf.behance.net/project_modules/max_3840/304183100365917.5f2b3a0ecc388.png"
     },
     {
         date: "2014-08-01", // Month is approximate
         title: "Ironclad Founded",
-        description: "Jason Boehmig and Cai GoGwilt found Ironclad, a contract lifecycle management platform, in San Francisco, California. The company aims to streamline contract creation and management processes for legal and business teams[1][2][5].",
-        logoUrl: "https://ironclad.com/favicon.ico"
+        description: "Jason Boehmig and Cai GoGwilt found Ironclad, a contract lifecycle management platform, in San Francisco, California. The company aims to streamline contract creation and management processes for legal and business teams.",
+        logoUrl: "https://db-fastly.legal.io/product_logo/5eec3dc86ae835000ec7a01d/1688063430.png?auto=webp"
     },
     {
         date: "2015-05-19",
         title: "Dentons Launches NextLaw Labs",
-        description: "Dentons announces the launch of NextLaw Labs, a global collaborative innovation platform focused on developing, deploying, and investing in new technologies and processes to transform the practice of law[3].",
-        logoUrl: "https://www.dentons.com/favicon.ico"
-    },
-    {
-        date: "2017-01-01", // Approximate date, as exact founding date wasn't provided
-        title: "MDR Lab Founded by Mishcon de Reya",
-        description: "Mishcon de Reya launches MDR Lab, an incubator program for tech startups in the legal space, aiming to collaborate with and support innovative legal technology companies.",
-        logoUrl: "https://www.mishcon.com/favicon.ico"
+        description: "Dentons announces the launch of NextLaw Labs, a global collaborative innovation platform focused on developing, deploying, and investing in new technologies and processes to transform the practice of law.",
+        logoUrl: "https://yt3.googleusercontent.com/VyW_AAZbcQmNgZubwi1pR4E7293stbzxgmJRWQOAxvziS1OthlRdm9H-w6BumE8xPHXrY1EyOw=s900-c-k-c0x00ffffff-no-rj"
     },
     {
         date: "2017-01-01", // Approximate date based on the information provided
         title: "Allen & Overy Launches FUSE",
-        description: "Allen & Overy establishes FUSE, a tech innovation hub designed to explore, develop, and implement digital solutions in the legal sector. Since its inception, FUSE has hosted over 50 companies and welcomed more than 10,000 visitors[3].",
-        logoUrl: "https://www.allenovery.com/favicon.ico"
+        description: "Allen & Overy establishes FUSE, a tech innovation hub designed to explore, develop, and implement digital solutions in the legal sector. Since its inception, FUSE has hosted over 50 companies and welcomed more than 10,000 visitors.",
+        logoUrl: "https://pbcdn1.podbean.com/imglogo/image-logo/7625884/A_O_White_on_red_logo_7pweh.jpg"
     },
+    {
+        date: "2016-01-01", // Approximate date based on the article
+        title: "Wavelength Law Founded",
+        description: "Peter Lee and Drew Winlaw establish Wavelength Law in Cambridge, UK, positioning it as the world's first regulated legal engineering firm. The company quickly gains prominence in legal tech and innovation.",
+        logoUrl: "https://pbs.twimg.com/profile_images/1547231423517663232/1aZ0XWke_400x400.jpg"
+      },
+      {
+        date: "2024-06-03",
+        title: "LexisNexis Acquires Henchman",
+        description: "LexisNexis Legal & Professional announces an agreement to acquire Henchman, a Belgian contract drafting startup founded in 2020. Henchman's technology enriches data from Document Management Systems for faster document drafting.",
+        logoUrl: "https://pbs.twimg.com/profile_images/630755063758233600/rlDiqKH7_400x400.png"
+      },
+      {
+        date: "2024-03-15",
+        title: "Thomson Reuters Acquires CoCounsel",
+        description: "Thomson Reuters announces the acquisition of CoCounsel, an AI legal assistant developed by Casetext, for $650 million cash.",
+        logoUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG5Bq5iOB4QE-yu_XNx6h-W9mECU3_UUbOgw&s"
+      },
     {
         date: "2017-06-12",
         title: "Transformer Architecture Introduced",
         description: "Google researchers publish 'Attention is All You Need', introducing the Transformer architecture that revolutionizes natural language processing.",
-        logoUrl: "https://www.google.com/favicon.ico"
+        logoUrl: "https://banner2.cleanpng.com/20190228/qby/kisspng-google-logo-google-account-g-suite-google-images-g-icon-archives-search-png-1713904157115.webp"
     },
+    {
+        date: "2019-07-24",
+        title: "Simmons & Simmons Acquires Wavelength",
+        description: "Simmons & Simmons, a leading international law firm, acquires Wavelength Law to enhance its legal technology and innovation capabilities. This move signifies a major shift in how law firms are integrating tech expertise.",
+        logoUrl: "https://pbs.twimg.com/profile_images/1547231423517663232/1aZ0XWke_400x400.jpg"
+      },
     {
         date: "2017-09-14", // Estimated based on available information
         title: "Atrium LTS Founded",
-        description: "Justin Kan founds Atrium LTS, a legal technology startup aimed at revolutionizing legal services through technology and a new business model[6].",
-        logoUrl: "https://www.atrium.co/favicon.ico"
+        description: "Justin Kan founds Atrium LTS, a legal technology startup aimed at revolutionizing legal services through technology and a new business model.",
+        logoUrl: "https://dioguwdgf472v.cloudfront.net/media/logos/equityinvest/Company/qv1h6djxbpbmbjx9sxwi-45c295899063c6ca.png"
     },
     {
         date: "2020-03-03",
         title: "Atrium LTS Shuts Down",
-        description: "Atrium, the legal tech startup that raised $75 million to revolutionize legal services, announces it is shutting down its operations[6].",
-        logoUrl: "https://www.atrium.co/favicon.ico"
+        description: "Atrium, the legal tech startup that raised $75 million to revolutionize legal services, announces it is shutting down its operations.",
+        logoUrl: "https://dioguwdgf472v.cloudfront.net/media/logos/equityinvest/Company/qv1h6djxbpbmbjx9sxwi-45c295899063c6ca.png"
     },
     {   
         date: "2020-06-11",
         title: "GPT-3 Released",
-        description: "OpenAI releases GPT-3, a large language model with 175 billion parameters, marking a significant advancement in natural language processing[2].",
-        logoUrl: "https://openai.com/favicon.ico"
+        description: "OpenAI releases GPT-3, a large language model with 175 billion parameters, marking a significant advancement in natural language processing.",
+        logoUrl: "https://i.pinimg.com/originals/2a/62/c3/2a62c34e0d217a7aa14645ce114d84b3.png"
     },
     {
         date: "2021-08-10",
         title: "Litera Acquires Kira Systems",
-        description: "Litera, a global leader in legal technology solutions, announces the acquisition of Kira Systems, transforming its due diligence process and marking Litera's 12th legal tech acquisition[1][2][4].",
-        logoUrl: "https://www.litera.com/favicon.ico"
+        description: "Litera, a global leader in legal technology solutions, announces the acquisition of Kira Systems, transforming its due diligence process and marking Litera's 12th legal tech acquisition.",
+        logoUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMBaiArpbkQmZvIQ9op30xkCyRD9yUCSEk-Q&s"
     },
     {
         date: "2022-01-01", // Exact date not provided, using year only
         title: "Harvey.ai Founded",
-        description: "Gabriel Pereyra, a former Meta AI researcher, and Winston Weinberg, an ex-O'Melveny & Myers lawyer, found Harvey.ai, a legal tech startup leveraging advanced natural language processing to streamline legal workflows[4].",
-        logoUrl: "https://harvey.ai/favicon.ico"
+        description: "Gabriel Pereyra, a former Meta AI researcher, and Winston Weinberg, an ex-O'Melveny & Myers lawyer, found Harvey.ai, a legal tech startup leveraging advanced natural language processing to streamline legal workflows.",
+        logoUrl: "https://www.finsmes.com/wp-content/uploads/2024/07/Harvey.png"
     },
     {
         date: "2022-11-30",
         title: "ChatGPT Released",
         description: "OpenAI releases ChatGPT, an AI-powered chatbot based on the GPT-3.5 architecture, to the public.",
-        logoUrl: "https://openai.com/favicon.ico"
+        logoUrl: "https://i.pinimg.com/originals/2a/62/c3/2a62c34e0d217a7aa14645ce114d84b3.png"
     },
+    {
+        date: "2018-07-01", // Approximate date based on available information
+        title: "Clifford Chance Launches Applied Solutions",
+        description: "Clifford Chance establishes Applied Solutions, a separate entity focused on delivering tech-enabled products to clients. This move represents a significant step in integrating technology into legal services delivery.",
+        logoUrl: "https://pbs.twimg.com/profile_images/1675856704364335107/wj0lqUju_400x400.png"
+      },
+      {
+        date: "2019-02-05",
+        title: "Wilson Sonsini Launches SixFifty",
+        description: "Wilson Sonsini Goodrich & Rosati announces the formation of SixFifty, a new software subsidiary. SixFifty aims to develop automated tools to make legal processes efficient and affordable, combining technology with human expertise from Wilson Sonsini attorneys.",
+        logoUrl: "https://images.squarespace-cdn.com/content/v1/614bf27df3281f0f4d9370d5/1633046656521-7DB9G7G2RGGATWOU53VN/image-asset.png"
+      },
     {
         date: "2023-05-01",
         title: "ChatGD Released",
         description: "Gunderson Dettmer releases ChatGD, an AI-powered legal assistant for startup and venture capital law.",
-        logoUrl: "https://www.gunder.com/favicon.ico"
+        logoUrl: "https://vault.com/_next/image?url=https%3A%2F%2Fmedia2.vault.com%2F14347497%2Fgunderson-logo-brand-mark-navy.jpg&w=384&q=75"
     }
 ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   
@@ -330,7 +346,7 @@ export const App: React.FC = () => {
 
     const [data, setData] = useState<Serie[]>([]);
     const [timeline, setTimeline] = useState<Date[]>([]);
-    const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(0);
+    const [currentTimeIndex, setCurrentTimeIndex] = useState<number>(-1);
     const [isPlaying, setIsPlaying] = useState<boolean>(false);
     const [visibleData, setVisibleData] = useState<Serie[]>([]);
     const [aggregateStars, setAggregateStars] = useState<number>(0);
@@ -350,7 +366,7 @@ export const App: React.FC = () => {
     const [pauseOnEvents, setPauseOnEvents] = useState<boolean>(false);
     const [appState, setAppState] = useState<AppState>({
       isPlaying: false,
-      currentTimeIndex: 0,
+      currentTimeIndex: -1,
       pauseOnEvents: false,
     });
 
@@ -362,9 +378,9 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         if (timeline.length > 0 && data.length > 0) {
-          updateVisibleData(0);
+          updateVisibleData(currentTimeIndex); // Use currentTimeIndex, which is -1 initially
         }
-      }, [timeline, data]);
+      }, [timeline, data, currentTimeIndex]);
 
     useEffect(() => {
         // Load project data from JSON file
@@ -487,8 +503,9 @@ export const App: React.FC = () => {
     useEffect(() => {
       setData(seriesData);
       setTimeline(processedTimeline);
-      setVisibleData(seriesData);
-      setVisibleProjects(new Set(seriesData.map((serie) => String(serie.id))));
+      // Removed setting visibleData to seriesData
+      // setVisibleData(seriesData); // <-- Removed this line
+      setVisibleProjects(new Set()); // Initialized to an empty set
 
       // Compute the initial maximum y-value
       let maxY = 0;
@@ -533,13 +550,26 @@ export const App: React.FC = () => {
      */
     const updateVisibleData = useCallback(
       (timeIndex: number) => {
-        const currentTime = processedTimeline[timeIndex];
-  
-        // Only proceed if timeIndex has changed
-        if (currentTimeIndex === timeIndex) {
+        if (timeIndex < 0) {
+          // Set visible data to empty arrays when timeIndex is less than 0
+          const emptyVisibleData = data.map((serie) => ({
+            ...serie,
+            data: [],
+          }));
+          setVisibleData(emptyVisibleData);
+          setAggregateStars(0);
           return;
         }
-  
+
+        const currentTime = processedTimeline[timeIndex];
+
+        // Remove this condition
+        // if (currentTimeIndex === timeIndex) {
+        //   return;
+        // }
+
+        // Proceed to update visible data up to the current time
+
         // Update visible projects based on creation times
         const newVisibleProjects = new Set(visibleProjects);
         let projectsAdded = false;
@@ -559,10 +589,10 @@ export const App: React.FC = () => {
         if (projectsAdded) {
           setVisibleProjects(newVisibleProjects);
         }
-  
+
         // Update visible data up to the current time
         const newVisibleData = data
-          .filter((serie) => visibleProjects.has(serie.id as string))
+          .filter((serie) => newVisibleProjects.has(serie.id as string))
           .map((serie) => {
             const filteredData = (serie.data as DataPoint[]).filter((d) => {
               const xDate = d.x instanceof Date ? d.x : new Date(d.x);
@@ -574,7 +604,7 @@ export const App: React.FC = () => {
             };
           });
         setVisibleData(newVisibleData);
-  
+
         // Update aggregate stars
         const totalStars = newVisibleData.reduce((sum, serie) => {
           const lastPoint = serie.data[serie.data.length - 1];
@@ -582,18 +612,16 @@ export const App: React.FC = () => {
         }, 0);
         setAggregateStars(Math.round(totalStars));
 
-         // Compute the current maximum y-value
-    let maxY = initialMaxY; // Start with initialMaxY
-    newVisibleData.forEach((serie) => {
-    const lastPoint = serie.data[serie.data.length - 1];
-    const yValue = typeof lastPoint?.y === 'number' ? lastPoint.y : 0;
-    if (yValue > maxY) {
-        maxY = yValue;
-    }
-    });
-
-    // Optionally add some padding to maxY
-    setCurrentMaxY(maxY * 1.1); // Increase maxY by 10% for padding
+        // Compute the current maximum y-value
+        let maxY = initialMaxY;
+        newVisibleData.forEach((serie) => {
+          const lastPoint = serie.data[serie.data.length - 1];
+          const yValue = typeof lastPoint?.y === 'number' ? lastPoint.y : 0;
+          if (yValue > maxY) {
+            maxY = yValue;
+          }
+        });
+        setCurrentMaxY(maxY * 1.1);
 
         // Identify top five projects
         const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
@@ -604,11 +632,11 @@ export const App: React.FC = () => {
               lastPoint && typeof lastPoint.y === 'number' ? lastPoint.y : 0,
           };
         });
-  
+
         latestCounts.sort((a, b) => b.count - a.count);
         const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
         const newTopProjects = new Set<string>(topFiveIds);
-  
+
         // Update topProjects and determine entering and leaving projects
         setTopProjects((prevTopProjects) => {
           const leavingProjects = new Set<string>(
@@ -617,13 +645,13 @@ export const App: React.FC = () => {
           const enteringProjects = new Set<string>(
             [...newTopProjects].filter((x) => !prevTopProjects.has(x))
           );
-  
+
           setLeavingTopProjects(leavingProjects);
           setEnteringTopProjects(enteringProjects);
-  
+
           return newTopProjects;
         });
-  
+
         // Adjust x-axis tick values based on time index
         if (timeIndex > processedTimeline.length * 0.8) {
           // At the end of the timeline, show yearly ticks
@@ -638,7 +666,7 @@ export const App: React.FC = () => {
         aggregateStars,
         initialMaxY,
         projectCreationTimes,
-        currentTimeIndex,
+        processedTimeline.length,
         // Other dependencies
       ]
     );
@@ -651,11 +679,11 @@ export const App: React.FC = () => {
         const newIsPlaying = !prevIsPlaying;
 
         if (newIsPlaying) {
-          if (currentTimeIndex >= processedTimeline.length - 1) {
+          if (currentTimeIndex >= processedTimeline.length - 1 || currentTimeIndex < 0) {
             handleReset();
-            return true; // Start playing from the beginning
           }
-          // If resuming, hide the event card
+
+          // Hide the event card if resuming
           if (showModal) {
             setShowModal(false);
             setCurrentEvent(null);
@@ -670,8 +698,13 @@ export const App: React.FC = () => {
      */
     const handleReset = () => {
       setIsPlaying(false);
-      setCurrentTimeIndex(0);
-      setVisibleData(data.map(serie => ({ ...serie, data: [] })));
+      setCurrentTimeIndex(-1); // Reset to -1 so no data is displayed
+      setVisibleData(
+        data.map((serie) => ({
+          ...serie,
+          data: [],
+        }))
+      );
       setVisibleProjects(new Set());
       setAggregateStars(0);
       setTopProjects(new Set());
@@ -788,7 +821,7 @@ export const App: React.FC = () => {
     return (
         <AppContainer>
           <DashboardCard>
-            <Heading>GitHub Projects Timeline</Heading>
+            <Heading>Legal Industry Milestones vs Development Velocity</Heading>
             <ChartContainer>
               <ResponsiveLine
                 data={visibleData}
@@ -926,34 +959,6 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

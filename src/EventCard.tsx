@@ -15,41 +15,46 @@ const CardContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 500px;
+  max-width: 600px;
+  height: 200px;
   background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 24px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   display: flex;
+  flex-direction: row;
   z-index: 1000;
 `;
 
 const LogoContainer = styled.div`
-  width: 35%;
-  padding: 2rem;
+  width: 45%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
 `;
 
 const Logo = styled.img`
   width: 100%;
-  height: auto;
-  max-height: 120px;
-  object-fit: contain;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const ContentContainer = styled.div`
-  width: 65%;
-  padding: 2rem;
+  width: 55%;
+  height: 100%;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 const Title = styled.h2`
-  margin: 0 0 1rem;
-  font-size: 1.5rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1f2937;
   line-height: 1.2;
@@ -57,17 +62,18 @@ const Title = styled.h2`
 
 const EventDate = styled.span`
   font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 1rem;
+  color: #4b5563;
+  margin-bottom: 0.5rem;
   display: block;
+  font-weight: 500;
 `;
 
 const Description = styled.div`
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #4b5563;
-  line-height: 1.5;
+  line-height: 1.4;
   overflow-y: auto;
-  max-height: 200px;
+  flex-grow: 1;
   
   &::-webkit-scrollbar {
     width: 6px;
