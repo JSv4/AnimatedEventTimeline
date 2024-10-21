@@ -10,7 +10,6 @@ interface LineEndLabelsProps {
   topProjects: Set<string>;
   enteringTopProjects: Set<string>;
   leavingTopProjects: Set<string>;
-  newProjectIds: Set<string>;
   series: readonly ComputedSerie[];
   innerWidth: number; // Added to access the chart's width
 }
@@ -23,9 +22,7 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
   topProjects,
   enteringTopProjects,
   leavingTopProjects,
-  newProjectIds,
   series,
-  innerWidth
 }) => {
   const [labelWidths, setLabelWidths] = useState<Map<string, number>>(new Map());
   const svgRef = useRef<SVGSVGElement>(null);

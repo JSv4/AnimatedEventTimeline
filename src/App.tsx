@@ -12,43 +12,43 @@ import { EventCard } from './EventCard';
  * Represents the star history of a project.
  */
 interface StarHistory {
-date: string;
-count: number;
+    date: string;
+    count: number;
 }
 
 /**
  * Represents the data for a project.
  */
 interface ProjectData {
-name: string;
-starHistory: StarHistory[];
-logoUrl: string;
+    name: string;
+    starHistory: StarHistory[];
+    logoUrl: string;
 }
 
 /**
  * Represents an event to be displayed on the chart.
  */
 interface Event {
-date: string;
-title: string;
-description: string;
-logoUrl?: string;
+    date: string;
+    title: string;
+    description: string;
+    logoUrl?: string;
 }
 
 /**
  * Represents the count of stars for a project.
  */
 interface ProjectCount {
-id: string;
-count: number;
+    id: string;
+    count: number;
 }
 
 /**
  * Represents a data point with x and y coordinates.
  */
 interface DataPoint {
-x: Date;
-y: number;
+    x: Date;
+    y: number;
 }
 
 import projectDataJson from './assets/legaltech_focused.json';
@@ -93,19 +93,19 @@ const events: Event[] = [
         title: "Wavelength Law Founded",
         description: "Peter Lee and Drew Winlaw establish Wavelength Law in Cambridge, UK, positioning it as the world's first regulated legal engineering firm. The company quickly gains prominence in legal tech and innovation.",
         logoUrl: "https://pbs.twimg.com/profile_images/1547231423517663232/1aZ0XWke_400x400.jpg"
-      },
-      {
+    },
+    {
         date: "2024-06-03",
         title: "LexisNexis Acquires Henchman",
         description: "LexisNexis Legal & Professional announces an agreement to acquire Henchman, a Belgian contract drafting startup founded in 2020. Henchman's technology enriches data from Document Management Systems for faster document drafting.",
         logoUrl: "https://pbs.twimg.com/profile_images/630755063758233600/rlDiqKH7_400x400.png"
-      },
-      {
+    },
+    {
         date: "2024-03-15",
         title: "Thomson Reuters Acquires CoCounsel",
         description: "Thomson Reuters announces the acquisition of CoCounsel, an AI legal assistant developed by Casetext, for $650 million cash.",
         logoUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSG5Bq5iOB4QE-yu_XNx6h-W9mECU3_UUbOgw&s"
-      },
+    },
     {
         date: "2017-06-12",
         title: "Transformer Architecture Introduced",
@@ -117,7 +117,7 @@ const events: Event[] = [
         title: "Simmons & Simmons Acquires Wavelength",
         description: "Simmons & Simmons, a leading international law firm, acquires Wavelength Law to enhance its legal technology and innovation capabilities. This move signifies a major shift in how law firms are integrating tech expertise.",
         logoUrl: "https://pbs.twimg.com/profile_images/1547231423517663232/1aZ0XWke_400x400.jpg"
-      },
+    },
     {
         date: "2017-09-14", // Estimated based on available information
         title: "Atrium LTS Founded",
@@ -130,7 +130,7 @@ const events: Event[] = [
         description: "Atrium, the legal tech startup that raised $75 million to revolutionize legal services, announces it is shutting down its operations.",
         logoUrl: "https://dioguwdgf472v.cloudfront.net/media/logos/equityinvest/Company/qv1h6djxbpbmbjx9sxwi-45c295899063c6ca.png"
     },
-    {   
+    {
         date: "2020-06-11",
         title: "GPT-3 Released",
         description: "OpenAI releases GPT-3, a large language model with 175 billion parameters, marking a significant advancement in natural language processing.",
@@ -159,13 +159,13 @@ const events: Event[] = [
         title: "Clifford Chance Launches Applied Solutions",
         description: "Clifford Chance establishes Applied Solutions, a separate entity focused on delivering tech-enabled products to clients. This move represents a significant step in integrating technology into legal services delivery.",
         logoUrl: "https://pbs.twimg.com/profile_images/1675856704364335107/wj0lqUju_400x400.png"
-      },
-      {
+    },
+    {
         date: "2019-02-05",
         title: "Wilson Sonsini Launches SixFifty",
         description: "Wilson Sonsini Goodrich & Rosati announces the formation of SixFifty, a new software subsidiary. SixFifty aims to develop automated tools to make legal processes efficient and affordable, combining technology with human expertise from Wilson Sonsini attorneys.",
         logoUrl: "https://images.squarespace-cdn.com/content/v1/614bf27df3281f0f4d9370d5/1633046656521-7DB9G7G2RGGATWOU53VN/image-asset.png"
-      },
+    },
     {
         date: "2023-05-01",
         title: "ChatGD Released",
@@ -173,7 +173,7 @@ const events: Event[] = [
         logoUrl: "https://vault.com/_next/image?url=https%3A%2F%2Fmedia2.vault.com%2F14347497%2Fgunderson-logo-brand-mark-navy.jpg&w=384&q=75"
     }
 ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  
+
 
 // Define a custom color palette using colors suitable for white backgrounds
 // Define a custom color palette using colors suitable for white backgrounds
@@ -189,7 +189,7 @@ const colorPalette = [
     '#bcbd22', // olive
     '#17becf', // cyan
     // Add more colors if needed
-  ];
+];
 
 /**
  * Formats a given date value to 'YYYY-MM-DD'.
@@ -197,8 +197,8 @@ const colorPalette = [
  * @returns The formatted date string.
  */
 const formatDate = (value: Date | number | string): string => {
-const date = new Date(value);
-return date.toISOString().split('T')[0];
+    const date = new Date(value);
+    return date.toISOString().split('T')[0];
 };
 
 // Updated styled components
@@ -272,13 +272,13 @@ const StatLabel = styled.p`
 `;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  marginRight?: boolean;
-  primary?: boolean;
+    marginRight?: boolean;
+    primary?: boolean;
 }
 
 const Button = styled.button.withConfig({
-  shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
-})<ButtonProps>`
+    shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
+}) <ButtonProps>`
   background: ${(props) => (props.primary ? 'linear-gradient(135deg, #4263eb 0%, #3b5bdb 100%)' : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)')};
   color: ${(props) => (props.primary ? '#ffffff' : '#4263eb')};
   border: none;
@@ -327,13 +327,6 @@ const ToggleLabel = styled.span`
 // Number of milliseconds to display the event modal
 const EVENT_DISPLAY_DURATION = 5000; // Adjust 'n' seconds here
 
-// Add this new interface
-interface AppState {
-  isPlaying: boolean;
-  currentTimeIndex: number;
-  pauseOnEvents: boolean;
-}
-
 /**
  * Main application component.
  * Displays an animated line chart of GitHub star counts over time
@@ -352,23 +345,16 @@ export const App: React.FC = () => {
     const [aggregateStars, setAggregateStars] = useState<number>(0);
     const [topProjects, setTopProjects] = useState<Set<string>>(new Set());
     const [xAxisTickValues, setXAxisTickValues] = useState<string | Date[]>('every year');
-  
+
     const [projectCreationTimes, setProjectCreationTimes] = useState<Map<string, Date>>(new Map());
     const [visibleProjects, setVisibleProjects] = useState<Set<string>>(new Set());
-    const [newProjectIds, setNewProjectIds] = useState<Set<string>>(new Set());
     const [leavingTopProjects, setLeavingTopProjects] = useState<Set<string>>(new Set());
     const [enteringTopProjects, setEnteringTopProjects] = useState<Set<string>>(new Set());
     const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
     const [projectData, setProjectData] = useState<ProjectData[]>([]);
-    const [eventTimerId, setEventTimerId] = useState<NodeJS.Timeout | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const eventTimerRef = useRef<NodeJS.Timeout | null>(null);
     const [pauseOnEvents, setPauseOnEvents] = useState<boolean>(false);
-    const [appState, setAppState] = useState<AppState>({
-      isPlaying: false,
-      currentTimeIndex: -1,
-      pauseOnEvents: false,
-    });
 
     useEffect(() => {
         if (currentEvent) {
@@ -378,21 +364,21 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         if (timeline.length > 0 && data.length > 0) {
-          updateVisibleData(currentTimeIndex); // Use currentTimeIndex, which is -1 initially
+            updateVisibleData(currentTimeIndex); // Use currentTimeIndex, which is -1 initially
         }
-      }, [timeline, data, currentTimeIndex]);
+    }, [timeline, data, currentTimeIndex]);
 
     useEffect(() => {
         // Load project data from JSON file
         setProjectData(projectDataJson as ProjectData[]);
-      }, []);
-  
-     // Update colorScale inside the component
+    }, []);
+
+    // Update colorScale inside the component
     const colorScale = useMemo(() => {
         return d3
-        .scaleOrdinal<string, string>()
-        .domain(projectData.map((project) => project.name))
-        .range(colorPalette);
+            .scaleOrdinal<string, string>()
+            .domain(projectData.map((project) => project.name))
+            .range(colorPalette);
     }, [projectData]);
 
     /**
@@ -400,570 +386,553 @@ export const App: React.FC = () => {
      * @returns An object containing the series data and the timeline of dates.
      */
     const processData = useCallback(() => {
-      // Determine the overall date range
-      const allDates = projectData.flatMap((project) =>
-        project.starHistory.map((history) => new Date(history.date))
-    );
-      const minDate = d3.min(allDates) || new Date();
-      const maxDate = d3.max(allDates) || new Date();
-  
-      // Adjust maxDate to ensure the timeline is not empty
-      const adjustedMaxDate = new Date(maxDate);
-      adjustedMaxDate.setMonth(adjustedMaxDate.getMonth() + 1);
-  
-      // Create a regular timeline (monthly intervals)
-      const timeline: Date[] = d3.timeMonths(
-        d3.timeMonth.floor(minDate),
-        adjustedMaxDate
-      );
-  
-      // Interpolate data for each project
-      const seriesData: Serie[] = projectData.map((project) => {
-        // Sort the star history by date
-        const sortedHistory = project.starHistory
-  .map((history) => ({
-    date: new Date(history.date), // Ensure this correctly parses the date
-    count: history.count,
-  }))
-  .sort((a, b) => a.date.getTime() - b.date.getTime());
-  
-        // Create a lookup for existing data points
-        const starHistoryMap = new Map(
-          sortedHistory.map((d) => [d.date.getTime(), d.count])
+        // Determine the overall date range
+        const allDates = projectData.flatMap((project) =>
+            project.starHistory.map((history) => new Date(history.date))
         );
-  
-        // Interpolate data points for the timeline
-        const series: DataPoint[] = timeline.map((date) => {
-          const timestamp = date.getTime();
-  
-          // Check if star count exists for this date
-          if (starHistoryMap.has(timestamp)) {
-            return { x: date, y: starHistoryMap.get(timestamp)! };
-          }
-  
-          // Find surrounding dates for interpolation
-          const previousEntries = sortedHistory.filter(
-            (d) => d.date.getTime() <= timestamp
-          );
-          const nextEntries = sortedHistory.filter(
-            (d) => d.date.getTime() >= timestamp
-          );
-  
-          const previousEntry = previousEntries[previousEntries.length - 1];
-          const nextEntry = nextEntries[0];
-  
-          let interpolatedCount = 0;
-  
-          if (previousEntry && nextEntry) {
-            const t =
-              (timestamp - previousEntry.date.getTime()) /
-              (nextEntry.date.getTime() - previousEntry.date.getTime());
-            interpolatedCount =
-              previousEntry.count +
-              t * (nextEntry.count - previousEntry.count);
-          } else if (previousEntry) {
-            interpolatedCount = previousEntry.count;
-          }
-  
-          return { x: date, y: interpolatedCount };
-        });
-  
-        // Filter out data points before the project exists
-        const firstNonZeroIndex = series.findIndex((d) => d.y > 0);
-        const filteredSeries =
-          firstNonZeroIndex >= 0 ? series.slice(firstNonZeroIndex) : [];
-  
-        return {
-          id: project.name,
-          data: filteredSeries,
-        };
-      });
-  
-      // Record project creation times
-      const creationTimes = new Map<string, Date>();
-      seriesData.forEach((serie) => {
-        const dataPoints = serie.data as DataPoint[];
-        if (dataPoints.length > 0) {
-          creationTimes.set(serie.id as string, dataPoints[0].x as Date);
-        }
-      });
-      setProjectCreationTimes(creationTimes);
-  
-      return { seriesData, timeline };
-    }, [projectData]);
-  
-    const { seriesData, timeline: processedTimeline } = useMemo(() => {
-      if (projectData.length > 0) {
-        return processData();
-      } else {
-        return { seriesData: [], timeline: [] };
-      }
-    }, [projectData]);
-  
-    useEffect(() => {
-      setData(seriesData);
-      setTimeline(processedTimeline);
-      // Removed setting visibleData to seriesData
-      // setVisibleData(seriesData); // <-- Removed this line
-      setVisibleProjects(new Set()); // Initialized to an empty set
+        const minDate = d3.min(allDates) || new Date();
+        const maxDate = d3.max(allDates) || new Date();
 
-      // Compute the initial maximum y-value
-      let maxY = 0;
-      seriesData.forEach((serie) => {
-        const firstPoint = serie.data[0];
-        const yValue = typeof firstPoint?.y === 'number' ? firstPoint.y : 0;
-        if (yValue > maxY) {
-          maxY = yValue;
-        }
-      });
-      setInitialMaxY(maxY * 2);
-    }, [seriesData, processedTimeline]);
-  
-    useEffect(() => {
-      let intervalId: NodeJS.Timeout | null = null;
-  
-      if (isPlaying && processedTimeline.length > 0) {
-        intervalId = setInterval(() => {
-          setCurrentTimeIndex((prevIndex) => {
-            if (prevIndex < processedTimeline.length - 1) {
-              const newIndex = prevIndex + 1;
-              updateVisibleData(newIndex);
-              return newIndex;
-            } else {
-              setIsPlaying(false);
-              return prevIndex;
+        // Adjust maxDate to ensure the timeline is not empty
+        const adjustedMaxDate = new Date(maxDate);
+        adjustedMaxDate.setMonth(adjustedMaxDate.getMonth() + 1);
+
+        // Create a regular timeline (monthly intervals)
+        const timeline: Date[] = d3.timeMonths(
+            d3.timeMonth.floor(minDate),
+            adjustedMaxDate
+        );
+
+        // Interpolate data for each project
+        const seriesData: Serie[] = projectData.map((project) => {
+            // Sort the star history by date
+            const sortedHistory = project.starHistory
+                .map((history) => ({
+                    date: new Date(history.date), // Ensure this correctly parses the date
+                    count: history.count,
+                }))
+                .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+            // Create a lookup for existing data points
+            const starHistoryMap = new Map(
+                sortedHistory.map((d) => [d.date.getTime(), d.count])
+            );
+
+            // Interpolate data points for the timeline
+            const series: DataPoint[] = timeline.map((date) => {
+                const timestamp = date.getTime();
+
+                // Check if star count exists for this date
+                if (starHistoryMap.has(timestamp)) {
+                    return { x: date, y: starHistoryMap.get(timestamp)! };
+                }
+
+                // Find surrounding dates for interpolation
+                const previousEntries = sortedHistory.filter(
+                    (d) => d.date.getTime() <= timestamp
+                );
+                const nextEntries = sortedHistory.filter(
+                    (d) => d.date.getTime() >= timestamp
+                );
+
+                const previousEntry = previousEntries[previousEntries.length - 1];
+                const nextEntry = nextEntries[0];
+
+                let interpolatedCount = 0;
+
+                if (previousEntry && nextEntry) {
+                    const t =
+                        (timestamp - previousEntry.date.getTime()) /
+                        (nextEntry.date.getTime() - previousEntry.date.getTime());
+                    interpolatedCount =
+                        previousEntry.count +
+                        t * (nextEntry.count - previousEntry.count);
+                } else if (previousEntry) {
+                    interpolatedCount = previousEntry.count;
+                }
+
+                return { x: date, y: interpolatedCount };
+            });
+
+            // Filter out data points before the project exists
+            const firstNonZeroIndex = series.findIndex((d) => d.y > 0);
+            const filteredSeries =
+                firstNonZeroIndex >= 0 ? series.slice(firstNonZeroIndex) : [];
+
+            return {
+                id: project.name,
+                data: filteredSeries,
+            };
+        });
+
+        // Record project creation times
+        const creationTimes = new Map<string, Date>();
+        seriesData.forEach((serie) => {
+            const dataPoints = serie.data as DataPoint[];
+            if (dataPoints.length > 0) {
+                creationTimes.set(serie.id as string, dataPoints[0].x as Date);
             }
-          });
-        }, 300);
-      }
-  
-      return () => {
-        if (intervalId) {
-          clearInterval(intervalId);
+        });
+        setProjectCreationTimes(creationTimes);
+
+        return { seriesData, timeline };
+    }, [projectData]);
+
+    const { seriesData, timeline: processedTimeline } = useMemo(() => {
+        if (projectData.length > 0) {
+            return processData();
+        } else {
+            return { seriesData: [], timeline: [] };
         }
-      };
+    }, [projectData]);
+
+    useEffect(() => {
+        setData(seriesData);
+        setTimeline(processedTimeline);
+        // Removed setting visibleData to seriesData
+        // setVisibleData(seriesData); // <-- Removed this line
+        setVisibleProjects(new Set()); // Initialized to an empty set
+
+        // Compute the initial maximum y-value
+        let maxY = 0;
+        seriesData.forEach((serie) => {
+            const firstPoint = serie.data[0];
+            const yValue = typeof firstPoint?.y === 'number' ? firstPoint.y : 0;
+            if (yValue > maxY) {
+                maxY = yValue;
+            }
+        });
+        setInitialMaxY(maxY * 2);
+    }, [seriesData, processedTimeline]);
+
+    useEffect(() => {
+        let intervalId: NodeJS.Timeout | null = null;
+
+        if (isPlaying && processedTimeline.length > 0) {
+            intervalId = setInterval(() => {
+                setCurrentTimeIndex((prevIndex) => {
+                    if (prevIndex < processedTimeline.length - 1) {
+                        const newIndex = prevIndex + 1;
+                        updateVisibleData(newIndex);
+                        return newIndex;
+                    } else {
+                        setIsPlaying(false);
+                        return prevIndex;
+                    }
+                });
+            }, 300);
+        }
+
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
     }, [isPlaying, processedTimeline]);
-  
+
     /**
      * Updates the visible data for the current time index.
      * @param timeIndex - The index of the current time point in the timeline.
      */
     const updateVisibleData = useCallback(
-      (timeIndex: number) => {
-        if (timeIndex < 0) {
-          // Set visible data to empty arrays when timeIndex is less than 0
-          const emptyVisibleData = data.map((serie) => ({
-            ...serie,
-            data: [],
-          }));
-          setVisibleData(emptyVisibleData);
-          setAggregateStars(0);
-          return;
-        }
+        (timeIndex: number) => {
+            if (timeIndex < 0) {
+                // Set visible data to empty arrays when timeIndex is less than 0
+                const emptyVisibleData = data.map((serie) => ({
+                    ...serie,
+                    data: [],
+                }));
+                setVisibleData(emptyVisibleData);
+                setAggregateStars(0);
+                return;
+            }
 
-        const currentTime = processedTimeline[timeIndex];
+            const currentTime = processedTimeline[timeIndex];
 
-        // Remove this condition
-        // if (currentTimeIndex === timeIndex) {
-        //   return;
-        // }
+            // Remove this condition
+            // if (currentTimeIndex === timeIndex) {
+            //   return;
+            // }
 
-        // Proceed to update visible data up to the current time
+            // Proceed to update visible data up to the current time
 
-        // Update visible projects based on creation times
-        const newVisibleProjects = new Set(visibleProjects);
-        let projectsAdded = false;
+            // Update visible projects based on creation times
+            const newVisibleProjects = new Set(visibleProjects);
+            let projectsAdded = false;
 
-        data.forEach((serie) => {
-          const creationTime = projectCreationTimes.get(serie.id as string);
-          if (
-            creationTime &&
-            creationTime.getTime() <= currentTime.getTime() &&
-            !visibleProjects.has(serie.id as string)
-          ) {
-            newVisibleProjects.add(serie.id as string);
-            projectsAdded = true;
-          }
-        });
-
-        if (projectsAdded) {
-          setVisibleProjects(newVisibleProjects);
-        }
-
-        // Update visible data up to the current time
-        const newVisibleData = data
-          .filter((serie) => newVisibleProjects.has(serie.id as string))
-          .map((serie) => {
-            const filteredData = (serie.data as DataPoint[]).filter((d) => {
-              const xDate = d.x instanceof Date ? d.x : new Date(d.x);
-              return xDate.getTime() <= currentTime.getTime();
+            data.forEach((serie) => {
+                const creationTime = projectCreationTimes.get(serie.id as string);
+                if (
+                    creationTime &&
+                    creationTime.getTime() <= currentTime.getTime() &&
+                    !visibleProjects.has(serie.id as string)
+                ) {
+                    newVisibleProjects.add(serie.id as string);
+                    projectsAdded = true;
+                }
             });
-            return {
-              ...serie,
-              data: filteredData,
-            };
-          });
-        setVisibleData(newVisibleData);
 
-        // Update aggregate stars
-        const totalStars = newVisibleData.reduce((sum, serie) => {
-          const lastPoint = serie.data[serie.data.length - 1];
-          return sum + (typeof lastPoint?.y === 'number' ? lastPoint.y : 0);
-        }, 0);
-        setAggregateStars(Math.round(totalStars));
+            if (projectsAdded) {
+                setVisibleProjects(newVisibleProjects);
+            }
 
-        // Compute the current maximum y-value
-        let maxY = initialMaxY;
-        newVisibleData.forEach((serie) => {
-          const lastPoint = serie.data[serie.data.length - 1];
-          const yValue = typeof lastPoint?.y === 'number' ? lastPoint.y : 0;
-          if (yValue > maxY) {
-            maxY = yValue;
-          }
-        });
-        setCurrentMaxY(maxY * 1.1);
+            // Update visible data up to the current time
+            const newVisibleData = data
+                .filter((serie) => newVisibleProjects.has(serie.id as string))
+                .map((serie) => {
+                    const filteredData = (serie.data as DataPoint[]).filter((d) => {
+                        const xDate = d.x instanceof Date ? d.x : new Date(d.x);
+                        return xDate.getTime() <= currentTime.getTime();
+                    });
+                    return {
+                        ...serie,
+                        data: filteredData,
+                    };
+                });
+            setVisibleData(newVisibleData);
 
-        // Identify top five projects
-        const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
-          const lastPoint = serie.data[serie.data.length - 1];
-          return {
-            id: String(serie.id),
-            count:
-              lastPoint && typeof lastPoint.y === 'number' ? lastPoint.y : 0,
-          };
-        });
+            // Update aggregate stars
+            const totalStars = newVisibleData.reduce((sum, serie) => {
+                const lastPoint = serie.data[serie.data.length - 1];
+                return sum + (typeof lastPoint?.y === 'number' ? lastPoint.y : 0);
+            }, 0);
+            setAggregateStars(Math.round(totalStars));
 
-        latestCounts.sort((a, b) => b.count - a.count);
-        const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
-        const newTopProjects = new Set<string>(topFiveIds);
+            // Compute the current maximum y-value
+            let maxY = initialMaxY;
+            newVisibleData.forEach((serie) => {
+                const lastPoint = serie.data[serie.data.length - 1];
+                const yValue = typeof lastPoint?.y === 'number' ? lastPoint.y : 0;
+                if (yValue > maxY) {
+                    maxY = yValue;
+                }
+            });
+            setCurrentMaxY(maxY * 1.1);
 
-        // Update topProjects and determine entering and leaving projects
-        setTopProjects((prevTopProjects) => {
-          const leavingProjects = new Set<string>(
-            [...prevTopProjects].filter((x) => !newTopProjects.has(x))
-          );
-          const enteringProjects = new Set<string>(
-            [...newTopProjects].filter((x) => !prevTopProjects.has(x))
-          );
+            // Identify top five projects
+            const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
+                const lastPoint = serie.data[serie.data.length - 1];
+                return {
+                    id: String(serie.id),
+                    count:
+                        lastPoint && typeof lastPoint.y === 'number' ? lastPoint.y : 0,
+                };
+            });
 
-          setLeavingTopProjects(leavingProjects);
-          setEnteringTopProjects(enteringProjects);
+            latestCounts.sort((a, b) => b.count - a.count);
+            const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
+            const newTopProjects = new Set<string>(topFiveIds);
 
-          return newTopProjects;
-        });
+            // Update topProjects and determine entering and leaving projects
+            setTopProjects((prevTopProjects) => {
+                const leavingProjects = new Set<string>(
+                    [...prevTopProjects].filter((x) => !newTopProjects.has(x))
+                );
+                const enteringProjects = new Set<string>(
+                    [...newTopProjects].filter((x) => !prevTopProjects.has(x))
+                );
 
-        // Adjust x-axis tick values based on time index
-        if (timeIndex > processedTimeline.length * 0.8) {
-          // At the end of the timeline, show yearly ticks
-          setXAxisTickValues('every year');
-        } else {
-          setXAxisTickValues('every 6 months');
-        }
-      },
-      [
-        data,
-        visibleProjects,
-        aggregateStars,
-        initialMaxY,
-        projectCreationTimes,
-        processedTimeline.length,
-        // Other dependencies
-      ]
+                setLeavingTopProjects(leavingProjects);
+                setEnteringTopProjects(enteringProjects);
+
+                return newTopProjects;
+            });
+
+            // Adjust x-axis tick values based on time index
+            if (timeIndex > processedTimeline.length * 0.8) {
+                // At the end of the timeline, show yearly ticks
+                setXAxisTickValues('every year');
+            } else {
+                setXAxisTickValues('every 6 months');
+            }
+        },
+        [
+            data,
+            visibleProjects,
+            aggregateStars,
+            initialMaxY,
+            projectCreationTimes,
+            processedTimeline.length,
+            // Other dependencies
+        ]
     );
-  
+
     /**
      * Handles play and pause functionality.
      */
     const handlePlayPause = () => {
-      setIsPlaying((prevIsPlaying) => {
-        const newIsPlaying = !prevIsPlaying;
+        setIsPlaying((prevIsPlaying) => {
+            const newIsPlaying = !prevIsPlaying;
 
-        if (newIsPlaying) {
-          if (currentTimeIndex >= processedTimeline.length - 1 || currentTimeIndex < 0) {
-            handleReset();
-          }
+            if (newIsPlaying) {
+                if (currentTimeIndex >= processedTimeline.length - 1 || currentTimeIndex < 0) {
+                    handleReset();
+                }
 
-          // Hide the event card if resuming
-          if (showModal) {
-            setShowModal(false);
-            setCurrentEvent(null);
-          }
-        }
-        return newIsPlaying;
-      });
+                // Hide the event card if resuming
+                if (showModal) {
+                    setShowModal(false);
+                    setCurrentEvent(null);
+                }
+            }
+            return newIsPlaying;
+        });
     };
-  
+
     /**
      * Resets the animation to the beginning.
      */
     const handleReset = () => {
-      setIsPlaying(false);
-      setCurrentTimeIndex(-1); // Reset to -1 so no data is displayed
-      setVisibleData(
-        data.map((serie) => ({
-          ...serie,
-          data: [],
-        }))
-      );
-      setVisibleProjects(new Set());
-      setAggregateStars(0);
-      setTopProjects(new Set());
-      setEnteringTopProjects(new Set());
-      setLeavingTopProjects(new Set());
-      setCurrentEvent(null);
-      setShowModal(false);
+        setIsPlaying(false);
+        setCurrentTimeIndex(-1); // Reset to -1 so no data is displayed
+        setVisibleData(
+            data.map((serie) => ({
+                ...serie,
+                data: [],
+            }))
+        );
+        setVisibleProjects(new Set());
+        setAggregateStars(0);
+        setTopProjects(new Set());
+        setEnteringTopProjects(new Set());
+        setLeavingTopProjects(new Set());
+        setCurrentEvent(null);
+        setShowModal(false);
     };
 
     /**
    * Memoized custom layer for line end labels.
    */
-  const lineEndLabelsLayer = useCallback(
-    (props: CustomLayerProps) => (
-      <LineEndLabels
-        topProjects={topProjects}
-        enteringTopProjects={enteringTopProjects}
-        leavingTopProjects={leavingTopProjects}
-        newProjectIds={newProjectIds}
-        series={props.series}
-        innerWidth={props.innerWidth} // Passed here
-      />
-    ),
-    [topProjects, enteringTopProjects, leavingTopProjects, newProjectIds]
-  );
+    const lineEndLabelsLayer = useCallback(
+        (props: CustomLayerProps) => (
+            <LineEndLabels
+                topProjects={topProjects}
+                enteringTopProjects={enteringTopProjects}
+                leavingTopProjects={leavingTopProjects}
+                series={props.series}
+                innerWidth={props.innerWidth} // Passed here
+            />
+        ),
+        [topProjects, enteringTopProjects, leavingTopProjects]
+    );
 
-   /**
-   * Handles the rendering of events.
-   * @param event - The current event to display or null.
-   */
-  const handleEventRendered = (event: Event | null) => {
-    if (event) {
-      if (
-        !currentEvent ||
-        currentEvent.date !== event.date
-      ) {
-        setCurrentEvent(event);
-        setShowModal(true);
+    /**
+    * Handles the rendering of events.
+    * @param event - The current event to display or null.
+    */
+    const handleEventRendered = (event: Event | null) => {
+        if (event) {
+            if (
+                !currentEvent ||
+                currentEvent.date !== event.date
+            ) {
+                setCurrentEvent(event);
+                setShowModal(true);
 
-        // Clear any existing timer
-        if (eventTimerRef.current) {
-          clearTimeout(eventTimerRef.current);
-        }
+                // Clear any existing timer
+                if (eventTimerRef.current) {
+                    clearTimeout(eventTimerRef.current);
+                }
 
-        // Pause if pauseOnEvents is true
-        if (pauseOnEvents) {
-          setIsPlaying(false);
+                // Pause if pauseOnEvents is true
+                if (pauseOnEvents) {
+                    setIsPlaying(false);
+                } else {
+                    // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
+                    eventTimerRef.current = setTimeout(() => {
+                        setShowModal(false);
+                        setCurrentEvent(null);
+                    }, EVENT_DISPLAY_DURATION);
+                }
+            }
         } else {
-          // Set a timer to hide the modal after EVENT_DISPLAY_DURATION
-          eventTimerRef.current = setTimeout(() => {
             setShowModal(false);
             setCurrentEvent(null);
-          }, EVENT_DISPLAY_DURATION);
+
+            if (eventTimerRef.current) {
+                clearTimeout(eventTimerRef.current);
+            }
         }
-      }
-    } else {
-      setShowModal(false);
-      setCurrentEvent(null);
-
-      if (eventTimerRef.current) {
-        clearTimeout(eventTimerRef.current);
-      }
-    }
-  };
-
-  // Clean up the timer when the component unmounts
-  useEffect(() => {
-    return () => {
-      if (eventTimerRef.current) {
-        clearTimeout(eventTimerRef.current);
-      }
     };
-  }, []);
+
+    // Clean up the timer when the component unmounts
+    useEffect(() => {
+        return () => {
+            if (eventTimerRef.current) {
+                clearTimeout(eventTimerRef.current);
+            }
+        };
+    }, []);
 
     const eventMarkersLayer = useCallback(
-      (props: CustomLayerProps) => (
-        <EventMarkersLayer
-          {...props}
-          events={events}
-          currentTime={processedTimeline[currentTimeIndex]}
-          onEventRendered={handleEventRendered}
-        />
-      ),
-      [events, handleEventRendered, processedTimeline, currentTimeIndex]
+        (props: CustomLayerProps) => (
+            <EventMarkersLayer
+                {...props}
+                events={events}
+                currentTime={processedTimeline[currentTimeIndex]}
+                onEventRendered={handleEventRendered}
+            />
+        ),
+        [events, handleEventRendered, processedTimeline, currentTimeIndex]
     );
 
     /**
    * Layers array memoized to update when custom layers change.
    */
-  const layers: Layer[] = [
-    'grid',
-    'markers',
-    'areas',
-    'lines',
-    'points',
-    'axes',
-    lineEndLabelsLayer,
-    eventMarkersLayer,
-  ];
-  
-    // Add this new function
-    const handleTogglePauseOnEvents = () => {
-      setAppState(prevState => ({
-        ...prevState,
-        pauseOnEvents: !prevState.pauseOnEvents,
-      }));
-    };
+    const layers: Layer[] = [
+        'grid',
+        'markers',
+        'areas',
+        'lines',
+        'points',
+        'axes',
+        lineEndLabelsLayer,
+        eventMarkersLayer,
+    ];
 
     // Add a function to handle toggle change
     const handlePauseOnEventsToggle = () => {
-      setPauseOnEvents(prev => !prev);
+        setPauseOnEvents(prev => !prev);
     };
 
     return (
         <AppContainer>
-          <DashboardCard>
-            <Heading>Legal Industry Milestones vs Development Velocity</Heading>
-            <ChartContainer>
-              <ResponsiveLine
-                data={visibleData}
-                margin={{ top: 30, right: 110, bottom: 50, left: 90 }} // Increased left margin from 60 to 90
-                xScale={{
-                  type: 'time',
-                  format: '%Y-%m-%d',
-                  useUTC: false,
-                  precision: 'day',
-                }}
-                xFormat="time:%Y-%m-%d"
-                yScale={{
-                  type: 'linear',
-                  min: 0,
-                  max: currentMaxY, // Use the computed initial maximum
-                  stacked: false,
-                  reverse: false,
-                }}
-                axisTop={null}
-                axisRight={null}
-                axisBottom={{
-                  tickValues: xAxisTickValues,
-                  format: (value) => formatDate(value),
-                  legend: 'Date',
-                  legendOffset: 40,
-                  legendPosition: 'middle',
-                }}
-                axisLeft={{
-                  tickSize: 5,
-                  tickPadding: 5,
-                  tickRotation: 0,
-                  legend: 'Stars',
-                  legendOffset: -60,
-                  legendPosition: 'middle',
-                }}
-                lineWidth={2}
-                pointSize={0}
-                useMesh={true}
-                enableSlices={false}
-                animate={true}
-                motionConfig="gentle"
-                colors={(serie) => colorScale(serie.id as string)}
-                theme={{
-                  background: 'transparent',
-                  text: {
-                    fill: '#495057',
-                    fontSize: 12,
-                    fontWeight: 500,
-                  },
-                  axis: {
-                    domain: {
-                      line: {
-                        stroke: '#ced4da',
-                        strokeWidth: 1,
-                      },
-                    },
-                    ticks: {
-                      line: {
-                        stroke: '#ced4da',
-                        strokeWidth: 1,
-                      },
-                      text: {
-                        fill: '#495057',
-                        fontSize: 11,
-                      },
-                    },
-                    legend: {
-                      text: {
-                        fontSize: 12,
-                        fill: '#343a40',
-                        fontWeight: 600,
-                      },
-                    },
-                  },
-                  grid: {
-                    line: {
-                      stroke: '#e9ecef',
-                      strokeWidth: 1,
-                    },
-                  },
-                  legends: {
-                    text: {
-                      fill: '#495057',
-                      fontSize: 11,
-                    },
-                  },
-                  tooltip: {
-                    container: {
-                      background: '#ffffff',
-                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-                      borderRadius: '8px',
-                      padding: '8px 12px',
-                    },
-                  },
-                }}
-                layers={layers}
-              />
-              {showModal && currentEvent && (
-                <EventCard
-                  title={currentEvent.title}
-                  description={currentEvent.description}
-                  logoUrl={currentEvent.logoUrl || ''}
-                  date={currentEvent.date} // Ensure this is a string
-                />
-              )}
-            </ChartContainer>
-            <ControlsContainer>
-              <StatsContainer>
-                <StatItem>
-                  <StatValue>
-                    {processedTimeline[currentTimeIndex]?.toISOString().split('T')[0]}
-                  </StatValue>
-                  <StatLabel>Date</StatLabel>
-                </StatItem>
-                <StatItem>
-                  <StatValue>{aggregateStars.toLocaleString()}</StatValue>
-                  <StatLabel>Total Stars</StatLabel>
-                </StatItem>
-              </StatsContainer>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <ToggleContainer>
-                  <ToggleLabel>Pause on events</ToggleLabel>
-                  <Switch
-                    checked={pauseOnEvents}
-                    onChange={handlePauseOnEventsToggle}
-                  />
-                </ToggleContainer>
-                <Button onClick={handlePlayPause} marginRight primary>
-                  {isPlaying ? 'Pause' : 'Play'}
-                </Button>
-                <Button onClick={handleReset}>Reset</Button>
-              </div>
-            </ControlsContainer>
-          </DashboardCard>
+            <DashboardCard>
+                <Heading>Legal Industry Milestones vs Development Velocity</Heading>
+                <ChartContainer>
+                    <ResponsiveLine
+                        data={visibleData}
+                        margin={{ top: 30, right: 110, bottom: 50, left: 90 }} // Increased left margin from 60 to 90
+                        xScale={{
+                            type: 'time',
+                            format: '%Y-%m-%d',
+                            useUTC: false,
+                            precision: 'day',
+                        }}
+                        xFormat="time:%Y-%m-%d"
+                        yScale={{
+                            type: 'linear',
+                            min: 0,
+                            max: currentMaxY, // Use the computed initial maximum
+                            stacked: false,
+                            reverse: false,
+                        }}
+                        axisTop={null}
+                        axisRight={null}
+                        axisBottom={{
+                            tickValues: xAxisTickValues,
+                            format: (value) => formatDate(value),
+                            legend: 'Date',
+                            legendOffset: 40,
+                            legendPosition: 'middle',
+                        }}
+                        axisLeft={{
+                            tickSize: 5,
+                            tickPadding: 5,
+                            tickRotation: 0,
+                            legend: 'Stars',
+                            legendOffset: -60,
+                            legendPosition: 'middle',
+                        }}
+                        lineWidth={2}
+                        pointSize={0}
+                        useMesh={true}
+                        enableSlices={false}
+                        animate={true}
+                        motionConfig="gentle"
+                        colors={(serie) => colorScale(serie.id as string)}
+                        theme={{
+                            background: 'transparent',
+                            text: {
+                                fill: '#495057',
+                                fontSize: 12,
+                                fontWeight: 500,
+                            },
+                            axis: {
+                                domain: {
+                                    line: {
+                                        stroke: '#ced4da',
+                                        strokeWidth: 1,
+                                    },
+                                },
+                                ticks: {
+                                    line: {
+                                        stroke: '#ced4da',
+                                        strokeWidth: 1,
+                                    },
+                                    text: {
+                                        fill: '#495057',
+                                        fontSize: 11,
+                                    },
+                                },
+                                legend: {
+                                    text: {
+                                        fontSize: 12,
+                                        fill: '#343a40',
+                                        fontWeight: 600,
+                                    },
+                                },
+                            },
+                            grid: {
+                                line: {
+                                    stroke: '#e9ecef',
+                                    strokeWidth: 1,
+                                },
+                            },
+                            legends: {
+                                text: {
+                                    fill: '#495057',
+                                    fontSize: 11,
+                                },
+                            },
+                            tooltip: {
+                                container: {
+                                    background: '#ffffff',
+                                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                                    borderRadius: '8px',
+                                    padding: '8px 12px',
+                                },
+                            },
+                        }}
+                        layers={layers}
+                    />
+                    {showModal && currentEvent && (
+                        <EventCard
+                            title={currentEvent.title}
+                            description={currentEvent.description}
+                            logoUrl={currentEvent.logoUrl || ''}
+                            date={currentEvent.date} // Ensure this is a string
+                        />
+                    )}
+                </ChartContainer>
+                <ControlsContainer>
+                    <StatsContainer>
+                        <StatItem>
+                            <StatValue>
+                                {processedTimeline[currentTimeIndex]?.toISOString().split('T')[0]}
+                            </StatValue>
+                            <StatLabel>Date</StatLabel>
+                        </StatItem>
+                        <StatItem>
+                            <StatValue>{aggregateStars.toLocaleString()}</StatValue>
+                            <StatLabel>Total Stars</StatLabel>
+                        </StatItem>
+                    </StatsContainer>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <ToggleContainer>
+                            <ToggleLabel>Pause on events</ToggleLabel>
+                            <Switch
+                                checked={pauseOnEvents}
+                                onChange={handlePauseOnEventsToggle}
+                            />
+                        </ToggleContainer>
+                        <Button onClick={handlePlayPause} marginRight primary>
+                            {isPlaying ? 'Pause' : 'Play'}
+                        </Button>
+                        <Button onClick={handleReset}>Reset</Button>
+                    </div>
+                </ControlsContainer>
+            </DashboardCard>
         </AppContainer>
-      );
-  };
-
-
-
-
-
-
-
-
+    );
+};

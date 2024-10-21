@@ -76,7 +76,6 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
         }
 
         // Detect label overlaps
-        let rotateLabel = false;
         const labelText = event.title;
 
         // Approximate label width for horizontal text
@@ -84,16 +83,6 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
 
         // Previous labels
         const prevLabels = labelPositionsRef.current;
-
-        // Check for overlaps with previous labels
-        const overlappingLabel = prevLabels.find(
-          (lbl) => Math.abs(lbl.x - x) < labelWidth
-        );
-
-        if (overlappingLabel) {
-          // Rotate label to avoid overlap
-          rotateLabel = true;
-        }
 
         // Update label positions
         prevLabels.push({ x, width: labelWidth });
