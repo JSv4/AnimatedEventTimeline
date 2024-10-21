@@ -65,21 +65,98 @@ import projectDataJson from './assets/test_data.json';
  */
 const events: Event[] = [
     {
-      date: '2014-01-09',
-      title: 'TensorFlow Released',
-      description: 'Google releases TensorFlow as an open-source project.',
-      logoUrl:
-        'https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/logos/pngs/TF_FullColor_Icon.png',
+        date: "2011-01-01",
+        title: "Kira Systems Founded",
+        description: "Noah Waisberg and Dr. Alexander Hudek found Kira Systems, a machine learning contract analysis company, in Toronto, Canada[5].",
+        logoUrl: "https://kirasystems.com/favicon.ico"
     },
     {
-      date: '2013-05-29',
-      title: 'React Released',
-      description: 'Facebook open-sources React library.',
-      logoUrl:
-        'https://raw.githubusercontent.com/facebook/react/master/fixtures/dom/public/react-logo.svg',
+        date: '2013-05-29',
+        title: 'React Released',
+        description: 'Facebook open-sources React library.',
+        logoUrl:
+            'https://raw.githubusercontent.com/facebook/react/master/fixtures/dom/public/react-logo.svg',
     },
-    // Add more events as needed
-  ];
+    {
+        date: '2014-01-09',
+        title: 'TensorFlow Released',
+        description: 'Google releases TensorFlow as an open-source project.',
+        logoUrl:
+            'https://raw.githubusercontent.com/tensorflow/tensorflow/master/tensorflow/logos/pngs/TF_FullColor_Icon.png',
+    },
+    {
+        date: "2014-08-01", // Month is approximate
+        title: "Ironclad Founded",
+        description: "Jason Boehmig and Cai GoGwilt found Ironclad, a contract lifecycle management platform, in San Francisco, California. The company aims to streamline contract creation and management processes for legal and business teams[1][2][5].",
+        logoUrl: "https://ironclad.com/favicon.ico"
+    },
+    {
+        date: "2015-05-19",
+        title: "Dentons Launches NextLaw Labs",
+        description: "Dentons announces the launch of NextLaw Labs, a global collaborative innovation platform focused on developing, deploying, and investing in new technologies and processes to transform the practice of law[3].",
+        logoUrl: "https://www.dentons.com/favicon.ico"
+    },
+    {
+        date: "2017-01-01", // Approximate date, as exact founding date wasn't provided
+        title: "MDR Lab Founded by Mishcon de Reya",
+        description: "Mishcon de Reya launches MDR Lab, an incubator program for tech startups in the legal space, aiming to collaborate with and support innovative legal technology companies.",
+        logoUrl: "https://www.mishcon.com/favicon.ico"
+    },
+    {
+        date: "2017-01-01", // Approximate date based on the information provided
+        title: "Allen & Overy Launches FUSE",
+        description: "Allen & Overy establishes FUSE, a tech innovation hub designed to explore, develop, and implement digital solutions in the legal sector. Since its inception, FUSE has hosted over 50 companies and welcomed more than 10,000 visitors[3].",
+        logoUrl: "https://www.allenovery.com/favicon.ico"
+    },
+    {
+        date: "2017-06-12",
+        title: "Transformer Architecture Introduced",
+        description: "Google researchers publish 'Attention is All You Need', introducing the Transformer architecture that revolutionizes natural language processing.",
+        logoUrl: "https://www.google.com/favicon.ico"
+    },
+    {
+        date: "2017-09-14", // Estimated based on available information
+        title: "Atrium LTS Founded",
+        description: "Justin Kan founds Atrium LTS, a legal technology startup aimed at revolutionizing legal services through technology and a new business model[6].",
+        logoUrl: "https://www.atrium.co/favicon.ico"
+    },
+    {
+        date: "2020-03-03",
+        title: "Atrium LTS Shuts Down",
+        description: "Atrium, the legal tech startup that raised $75 million to revolutionize legal services, announces it is shutting down its operations[6].",
+        logoUrl: "https://www.atrium.co/favicon.ico"
+    },
+    {   
+        date: "2020-06-11",
+        title: "GPT-3 Released",
+        description: "OpenAI releases GPT-3, a large language model with 175 billion parameters, marking a significant advancement in natural language processing[2].",
+        logoUrl: "https://openai.com/favicon.ico"
+    },
+    {
+        date: "2021-08-10",
+        title: "Litera Acquires Kira Systems",
+        description: "Litera, a global leader in legal technology solutions, announces the acquisition of Kira Systems, transforming its due diligence process and marking Litera's 12th legal tech acquisition[1][2][4].",
+        logoUrl: "https://www.litera.com/favicon.ico"
+    },
+    {
+        date: "2022-01-01", // Exact date not provided, using year only
+        title: "Harvey.ai Founded",
+        description: "Gabriel Pereyra, a former Meta AI researcher, and Winston Weinberg, an ex-O'Melveny & Myers lawyer, found Harvey.ai, a legal tech startup leveraging advanced natural language processing to streamline legal workflows[4].",
+        logoUrl: "https://harvey.ai/favicon.ico"
+    },
+    {
+        date: "2022-11-30",
+        title: "ChatGPT Released",
+        description: "OpenAI releases ChatGPT, an AI-powered chatbot based on the GPT-3.5 architecture, to the public.",
+        logoUrl: "https://openai.com/favicon.ico"
+    },
+    {
+        date: "2023-05-01",
+        title: "ChatGD Released",
+        description: "Gunderson Dettmer releases ChatGD, an AI-powered legal assistant for startup and venture capital law.",
+        logoUrl: "https://www.gunder.com/favicon.ico"
+    }
+].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   
 
 // Define a custom color palette using colors suitable for white backgrounds
@@ -193,76 +270,6 @@ const Button = styled.button.withConfig({
   }
 `;
 
-// Updated styled components for the event card
-const Modal = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  display: flex;
-  z-index: 1000;
-  width: 400px;
-  max-width: 90%;
-  max-height: 90%;
-  overflow: hidden;
-`;
-
-const ModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-height: 100%;
-  overflow: hidden;
-`;
-
-const ModalHeader = styled.div`
-  background-color: #f8f9fa;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #e9ecef;
-`;
-
-const ModalImage = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
-  border-radius: 8px;
-`;
-
-const ModalTitle = styled.h2`
-  margin: 0;
-  color: #333;
-  font-size: 1.25rem;
-  font-weight: 600;
-`;
-
-const ModalBody = styled.div`
-  padding: 1rem;
-  overflow-y: auto;
-`;
-
-const ModalDescription = styled.div`
-  margin: 0;
-  color: #555;
-  font-size: 0.9rem;
-  line-height: 1.5;
-
-  p {
-    margin-bottom: 0.75rem;
-  }
-
-  a {
-    color: #007bff;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-`;
 
 const Heading = styled.h1`
   margin-bottom: 1rem;
@@ -454,34 +461,39 @@ export const App: React.FC = () => {
       return { seriesData, timeline };
     }, [projectData]);
   
+    const { seriesData, timeline: processedTimeline } = useMemo(() => {
+      if (projectData.length > 0) {
+        return processData();
+      } else {
+        return { seriesData: [], timeline: [] };
+      }
+    }, [projectData]);
+  
     useEffect(() => {
-        if (projectData.length > 0) {
-          const { seriesData, timeline } = processData();
-          setData(seriesData);
-          setTimeline(timeline);
-          setVisibleData(seriesData); // Use full data for testing
-          setVisibleProjects(new Set(seriesData.map((serie) => String(serie.id))));
+      setData(seriesData);
+      setTimeline(processedTimeline);
+      setVisibleData(seriesData);
+      setVisibleProjects(new Set(seriesData.map((serie) => String(serie.id))));
 
-          // Compute the initial maximum y-value
-          let maxY = 0;
-          seriesData.forEach((serie) => {
-            const firstPoint = serie.data[0];
-            const yValue = typeof firstPoint?.y === 'number' ? firstPoint.y : 0;
-            if (yValue > maxY) {
-              maxY = yValue;
-            }
-          });
-          setInitialMaxY(maxY * 2); // Set initial max to 2X the first point
+      // Compute the initial maximum y-value
+      let maxY = 0;
+      seriesData.forEach((serie) => {
+        const firstPoint = serie.data[0];
+        const yValue = typeof firstPoint?.y === 'number' ? firstPoint.y : 0;
+        if (yValue > maxY) {
+          maxY = yValue;
         }
-      }, [projectData, processData]);
+      });
+      setInitialMaxY(maxY * 2);
+    }, [seriesData, processedTimeline]);
   
     useEffect(() => {
-      let intervalId: NodeJS.Timeout;
+      let intervalId: NodeJS.Timeout | null = null;
   
-      if (isPlaying && timeline.length > 0) {
+      if (isPlaying && processedTimeline.length > 0) {
         intervalId = setInterval(() => {
           setCurrentTimeIndex((prevIndex) => {
-            if (prevIndex < timeline.length - 1) {
+            if (prevIndex < processedTimeline.length - 1) {
               const newIndex = prevIndex + 1;
               updateVisibleData(newIndex);
               return newIndex;
@@ -490,55 +502,72 @@ export const App: React.FC = () => {
               return prevIndex;
             }
           });
-        }, 300); // Adjust interval for smoother animation
+        }, 300);
       }
   
-      return () => clearInterval(intervalId);
-    }, [isPlaying, timeline, data]);
+      return () => {
+        if (intervalId) {
+          clearInterval(intervalId);
+        }
+      };
+    }, [isPlaying, processedTimeline]);
   
     /**
      * Updates the visible data for the current time index.
      * @param timeIndex - The index of the current time point in the timeline.
      */
-    const updateVisibleData = (timeIndex: number) => {
-      const currentTime = timeline[timeIndex];
+    const updateVisibleData = useCallback(
+      (timeIndex: number) => {
+        const currentTime = processedTimeline[timeIndex];
   
-      // Update visible projects based on creation times
-      const newVisibleProjects = new Set(visibleProjects);
-      data.forEach((serie) => {
-        const creationTime = projectCreationTimes.get(serie.id as string);
-        if (creationTime && creationTime.getTime() <= currentTime.getTime()) {
-          if (!visibleProjects.has(serie.id as string)) {
-            newVisibleProjects.add(serie.id as string);
-            setNewProjectIds((prev) => new Set(prev).add(serie.id as string));
-          }
+        // Only proceed if timeIndex has changed
+        if (currentTimeIndex === timeIndex) {
+          return;
         }
-      });
-      setVisibleProjects(newVisibleProjects);
   
-      // Update visible data up to the current time
-      const newVisibleData = data
-        .filter((serie) => visibleProjects.has(serie.id as string))
-        .map((serie) => {
-          const filteredData = (serie.data as DataPoint[]).filter((d) => {
-            const xDate = d.x instanceof Date ? d.x : new Date(d.x);
-            return xDate.getTime() <= currentTime.getTime();
-          });
-          return {
-            ...serie,
-            data: filteredData,
-          };
-        });
-      setVisibleData(newVisibleData);
-  
-      // Update aggregate stars
-      const totalStars = newVisibleData.reduce((sum, serie) => {
-        const lastPoint = serie.data[serie.data.length - 1];
-        return sum + (typeof lastPoint?.y === 'number' ? lastPoint.y : 0);
-      }, 0);
-      setAggregateStars(Math.round(totalStars));
+        // Update visible projects based on creation times
+        const newVisibleProjects = new Set(visibleProjects);
+        let projectsAdded = false;
 
-       // Compute the current maximum y-value
+        data.forEach((serie) => {
+          const creationTime = projectCreationTimes.get(serie.id as string);
+          if (
+            creationTime &&
+            creationTime.getTime() <= currentTime.getTime() &&
+            !visibleProjects.has(serie.id as string)
+          ) {
+            newVisibleProjects.add(serie.id as string);
+            projectsAdded = true;
+          }
+        });
+
+        if (projectsAdded) {
+          setVisibleProjects(newVisibleProjects);
+        }
+  
+        // Update visible data up to the current time
+        const newVisibleData = data
+          .filter((serie) => visibleProjects.has(serie.id as string))
+          .map((serie) => {
+            const filteredData = (serie.data as DataPoint[]).filter((d) => {
+              const xDate = d.x instanceof Date ? d.x : new Date(d.x);
+              return xDate.getTime() <= currentTime.getTime();
+            });
+            return {
+              ...serie,
+              data: filteredData,
+            };
+          });
+        setVisibleData(newVisibleData);
+  
+        // Update aggregate stars
+        const totalStars = newVisibleData.reduce((sum, serie) => {
+          const lastPoint = serie.data[serie.data.length - 1];
+          return sum + (typeof lastPoint?.y === 'number' ? lastPoint.y : 0);
+        }, 0);
+        setAggregateStars(Math.round(totalStars));
+
+         // Compute the current maximum y-value
     let maxY = initialMaxY; // Start with initialMaxY
     newVisibleData.forEach((serie) => {
     const lastPoint = serie.data[serie.data.length - 1];
@@ -551,43 +580,53 @@ export const App: React.FC = () => {
     // Optionally add some padding to maxY
     setCurrentMaxY(maxY * 1.1); // Increase maxY by 10% for padding
 
-      // Identify top five projects
-      const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
-        const lastPoint = serie.data[serie.data.length - 1];
-        return {
-          id: String(serie.id),
-          count:
-            lastPoint && typeof lastPoint.y === 'number' ? lastPoint.y : 0,
-        };
-      });
+        // Identify top five projects
+        const latestCounts: ProjectCount[] = newVisibleData.map((serie) => {
+          const lastPoint = serie.data[serie.data.length - 1];
+          return {
+            id: String(serie.id),
+            count:
+              lastPoint && typeof lastPoint.y === 'number' ? lastPoint.y : 0,
+          };
+        });
   
-      latestCounts.sort((a, b) => b.count - a.count);
-      const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
-      const newTopProjects = new Set<string>(topFiveIds);
+        latestCounts.sort((a, b) => b.count - a.count);
+        const topFiveIds = latestCounts.slice(0, 5).map((item) => item.id);
+        const newTopProjects = new Set<string>(topFiveIds);
   
-      // Update topProjects and determine entering and leaving projects
-      setTopProjects((prevTopProjects) => {
-        const leavingProjects = new Set<string>(
-          [...prevTopProjects].filter((x) => !newTopProjects.has(x))
-        );
-        const enteringProjects = new Set<string>(
-          [...newTopProjects].filter((x) => !prevTopProjects.has(x))
-        );
+        // Update topProjects and determine entering and leaving projects
+        setTopProjects((prevTopProjects) => {
+          const leavingProjects = new Set<string>(
+            [...prevTopProjects].filter((x) => !newTopProjects.has(x))
+          );
+          const enteringProjects = new Set<string>(
+            [...newTopProjects].filter((x) => !prevTopProjects.has(x))
+          );
   
-        setLeavingTopProjects(leavingProjects);
-        setEnteringTopProjects(enteringProjects);
+          setLeavingTopProjects(leavingProjects);
+          setEnteringTopProjects(enteringProjects);
   
-        return newTopProjects;
-      });
+          return newTopProjects;
+        });
   
-      // Adjust x-axis tick values based on time index
-      if (timeIndex > timeline.length * 0.8) {
-        // At the end of the timeline, show yearly ticks
-        setXAxisTickValues('every year');
-      } else {
-        setXAxisTickValues('every 6 months');
-      }
-    };
+        // Adjust x-axis tick values based on time index
+        if (timeIndex > processedTimeline.length * 0.8) {
+          // At the end of the timeline, show yearly ticks
+          setXAxisTickValues('every year');
+        } else {
+          setXAxisTickValues('every 6 months');
+        }
+      },
+      [
+        data,
+        visibleProjects,
+        aggregateStars,
+        initialMaxY,
+        projectCreationTimes,
+        currentTimeIndex,
+        // Other dependencies
+      ]
+    );
   
     /**
      * Handles play and pause functionality.
@@ -597,7 +636,7 @@ export const App: React.FC = () => {
         const newIsPlaying = !prevIsPlaying;
 
         if (newIsPlaying) {
-          if (currentTimeIndex >= timeline.length - 1) {
+          if (currentTimeIndex >= processedTimeline.length - 1) {
             handleReset();
             return true; // Start playing from the beginning
           }
@@ -697,11 +736,11 @@ export const App: React.FC = () => {
         <EventMarkersLayer
           {...props}
           events={events}
-          currentTime={timeline[currentTimeIndex]}
+          currentTime={processedTimeline[currentTimeIndex]}
           onEventRendered={handleEventRendered}
         />
       ),
-      [events, handleEventRendered, timeline, currentTimeIndex]
+      [events, handleEventRendered, processedTimeline, currentTimeIndex]
     );
 
     /**
@@ -843,7 +882,7 @@ export const App: React.FC = () => {
               <StatsContainer>
                 <StatItem>
                   <StatValue>
-                    {timeline[currentTimeIndex]?.toISOString().split('T')[0]}
+                    {processedTimeline[currentTimeIndex]?.toISOString().split('T')[0]}
                   </StatValue>
                   <StatLabel>Date</StatLabel>
                 </StatItem>
@@ -870,6 +909,13 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
+
+
+
+
 
 
 

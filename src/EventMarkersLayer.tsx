@@ -2,7 +2,7 @@
  * Component to render event markers on the chart.
  */
 import React, { useEffect, useRef, useState } from 'react';
-import { ScaleTime, ScaleLinear } from 'd3-scale';
+import { ScaleTime } from 'd3-scale';
 
 /**
  * Represents an event to be displayed on the chart.
@@ -19,7 +19,6 @@ interface Event {
  */
 interface EventMarkersLayerProps {
   xScale: ScaleTime<number, number>;
-  yScale: ScaleLinear<number, number>;
   innerHeight: number;
   events: Event[];
   currentTime: Date;
@@ -39,19 +38,22 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
 }) => {
   const [renderedEventIndices, setRenderedEventIndices] = useState<Set<number>>(new Set());
 
+  // Store positions of labels to detect overlaps
+  const labelPositionsRef = useRef<{ x: number; width: number }[]>([]);
+
   useEffect(() => {
     const currentDate = currentTime;
 
     // Find the events that have occurred up to the current date and haven't been rendered yet
     const newPastEvents = events.filter(
-      (event, index) => new Date(event.date) <= currentDate && !renderedEventIndices.has(index)
+      (event, index) =>
+        new Date(event.date) <= currentDate && !renderedEventIndices.has(index)
     );
 
-
     if (newPastEvents.length > 0) {
-      setRenderedEventIndices(prev => {
+      setRenderedEventIndices((prev) => {
         const newSet = new Set(prev);
-        newPastEvents.forEach((event, i) => {
+        newPastEvents.forEach((event) => {
           const eventIndex = events.indexOf(event);
           newSet.add(eventIndex);
           onEventRendered(event);
@@ -72,6 +74,35 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
         if (x < 0 || x > xScale.range()[1]) {
           return null;
         }
+
+        // Detect label overlaps
+        let rotateLabel = false;
+        const labelText = event.title;
+
+        // Approximate label width for horizontal text
+        const labelWidth = labelText.length * 8; // Approximate character width
+
+        // Previous labels
+        const prevLabels = labelPositionsRef.current;
+
+        // Check for overlaps with previous labels
+        const overlappingLabel = prevLabels.find(
+          (lbl) => Math.abs(lbl.x - x) < labelWidth
+        );
+
+        if (overlappingLabel) {
+          // Rotate label to avoid overlap
+          rotateLabel = true;
+        }
+
+        // Update label positions
+        prevLabels.push({ x, width: labelWidth });
+
+        // Limit the size of prevLabels to avoid excessive memory usage
+        if (prevLabels.length > 100) {
+          prevLabels.shift();
+        }
+
         return (
           <g key={index} transform={`translate(${x},0)`}>
             <line
@@ -83,7 +114,10 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
             <text
               y={-10}
               textAnchor="middle"
-              style={{ fontSize: 16, fill: '#000' }} // Increased font size
+              style={{ fontSize: 16, fill: '#000' }}
+              transform={rotateLabel ? 'rotate(-90)' : undefined}
+              dy={rotateLabel ? '-5' : undefined}
+              dx={rotateLabel ? '5' : undefined}
             >
               {event.title}
             </text>
