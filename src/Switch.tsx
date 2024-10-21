@@ -10,12 +10,13 @@ const SwitchInput = styled.input`
   height: 0;
   width: 0;
   visibility: hidden;
+  position: absolute;
 `;
 
 const SwitchLabel = styled.label`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   cursor: pointer;
   width: 50px;
   height: 25px;

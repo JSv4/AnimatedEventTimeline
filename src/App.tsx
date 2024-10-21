@@ -291,6 +291,7 @@ interface AppState {
 // Add this new styled component
 const ToggleContainer = styled.div`
   display: flex;
+  flex-direction: row;
   align-items: center;
   margin-right: 1rem;
 `;
@@ -891,13 +892,15 @@ export const App: React.FC = () => {
                   <StatLabel>Total Stars</StatLabel>
                 </StatItem>
               </StatsContainer>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <ToggleContainer>
-                  <ToggleLabel>Pause on events</ToggleLabel>
-                  <Switch
-                    checked={pauseOnEvents}
-                    onChange={handlePauseOnEventsToggle}
-                  />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ToggleContainer style={{ marginRight: '1rem', display: 'flex', alignItems: 'center' }}>
+                  <ToggleLabel style={{ marginRight: '0.5rem' }}>Pause on events</ToggleLabel>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Switch
+                      checked={pauseOnEvents}
+                      onChange={handlePauseOnEventsToggle}
+                    />
+                  </div>
                 </ToggleContainer>
                 <Button onClick={handlePlayPause} marginRight primary>
                   {isPlaying ? 'Pause' : 'Play'}
@@ -909,6 +912,9 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
+
+
 
 
 
