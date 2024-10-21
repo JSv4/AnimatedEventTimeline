@@ -202,6 +202,32 @@ const formatDate = (value: Date | number | string): string => {
 };
 
 // Updated styled components
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    marginRight?: boolean;
+    primary?: boolean;
+}
+
+const Button = styled.button.withConfig({
+    shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
+}) <ButtonProps>`
+  background: ${(props) => (props.primary ? 'linear-gradient(135deg, #4263eb 0%, #3b5bdb 100%)' : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)')};
+  color: ${(props) => (props.primary ? '#ffffff' : '#4263eb')};
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+`;
+
 const AppContainer = styled.div`
   height: 100vh;
   width: 100vw;
@@ -271,31 +297,7 @@ const StatLabel = styled.p`
   letter-spacing: 0.5px;
 `;
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    marginRight?: boolean;
-    primary?: boolean;
-}
-
-const Button = styled.button.withConfig({
-    shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
-}) <ButtonProps>`
-  background: ${(props) => (props.primary ? 'linear-gradient(135deg, #4263eb 0%, #3b5bdb 100%)' : 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)')};
-  color: ${(props) => (props.primary ? '#ffffff' : '#4263eb')};
-  border: none;
-  padding: 0.75rem 1.5rem;
-  margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  }
-`;
+// ... existing Button component ...
 
 const Heading = styled.h1`
   margin-bottom: 1.5rem;
