@@ -68,7 +68,7 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
       if (!lastPoint) {
         return null;
       }
-      const x = innerWidth;
+      const x = lastPoint.position.x;
       const y = lastPoint.position.y;
       const seriesId = String(line.id);
       const isEntering = enteringTopProjects.has(seriesId);
@@ -120,9 +120,9 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
         return (
           <text
             key={label}
-            x={x - 5} // Subtract 5 for a small gap between the line end and the label
+            x={x}
             y={y}
-            textAnchor="end" // Align the text to the right
+            textAnchor="end" // Align the text to the left of the x-coordinate
             style={{
               fill: fillColor,
               fontSize: 16, // Increased font size from 14 to 16
