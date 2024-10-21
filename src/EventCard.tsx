@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { marked } from 'marked';
 
 interface EventCardProps {
@@ -9,21 +9,33 @@ interface EventCardProps {
   date: string;
 }
 
+const fadeInScale = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
 const CardContainer = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90%;
-  max-width: 600px;
-  height: 200px;
+  width: 95%;
+  max-width: 1000px;
+  height: 400px;
   background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
-  border-radius: 24px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.04);
+  border-radius: 32px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   display: flex;
   flex-direction: row;
   z-index: 1000;
+  animation: ${fadeInScale} 0.3s ease-out;
 `;
 
 const LogoContainer = styled.div`
@@ -46,32 +58,46 @@ const Logo = styled.img`
 const ContentContainer = styled.div`
   width: 55%;
   height: 100%;
-  padding: 1.5rem;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
 `;
 
 const Title = styled.h2`
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #1a202c;
   line-height: 1.2;
+  letter-spacing: -0.025em;
+`;
+
+const pulsate = keyframes`
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
 `;
 
 const EventDate = styled.span`
-  font-size: 0.875rem;
-  color: #4b5563;
-  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #4a5568;
+  margin-bottom: 1.5rem;
   display: block;
-  font-weight: 500;
+  font-weight: 600;
+  animation: ${pulsate} 2s ease-in-out;
 `;
 
 const Description = styled.div`
-  font-size: 0.9rem;
-  color: #4b5563;
-  line-height: 1.4;
+  font-size: 1.25rem;
+  color: #2d3748;
+  line-height: 1.7;
   overflow-y: auto;
   flex-grow: 1;
   
@@ -89,11 +115,11 @@ const Description = styled.div`
   }
 
   p {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
   }
 
   a {
-    color: #4f46e5;
+    color: #4299e1;
     text-decoration: none;
     font-weight: 500;
     &:hover {
@@ -113,8 +139,8 @@ export const EventCard: React.FC<EventCardProps> = ({ title, description, logoUr
   const formatDate = (dateString: string): string => {
     const parsedDate = new Date(dateString);
     return isNaN(parsedDate.getTime())
-      ? dateString // If parsing fails, return the original string
-      : parsedDate.toLocaleDateString();
+      ? dateString
+      : parsedDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
   };
 
   return (

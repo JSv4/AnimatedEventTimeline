@@ -164,7 +164,7 @@ const events: Event[] = [
         date: "2019-02-05",
         title: "Wilson Sonsini Launches SixFifty",
         description: "Wilson Sonsini Goodrich & Rosati announces the formation of SixFifty, a new software subsidiary. SixFifty aims to develop automated tools to make legal processes efficient and affordable, combining technology with human expertise from Wilson Sonsini attorneys.",
-        logoUrl: "https://images.squarespace-cdn.com/content/v1/614bf27df3281f0f4d9370d5/1633046656521-7DB9G7G2RGGATWOU53VN/image-asset.png"
+        logoUrl: "https://cdn.prod.website-files.com/622357b2bf2cca337e9cf3aa/64e93be697a309c331a877cb_Wilson%20Sonsini%20logo%20dark.webp"
     },
     {
         date: "2023-05-01",
