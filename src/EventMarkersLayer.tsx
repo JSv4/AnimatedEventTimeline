@@ -112,12 +112,12 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
               strokeDasharray="4 4"
             />
             <text
-              y={-10}
-              textAnchor="middle"
+              x={0}
+              y={0}
+              textAnchor="end"
+              dominantBaseline="text-after-edge"
+              transform="rotate(-90)"
               style={{ fontSize: 16, fill: '#000' }}
-              transform={rotateLabel ? 'rotate(-90)' : undefined}
-              dy={rotateLabel ? '-5' : undefined}
-              dx={rotateLabel ? '5' : undefined}
             >
               {event.title}
             </text>
