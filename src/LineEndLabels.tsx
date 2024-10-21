@@ -115,22 +115,23 @@ export const LineEndLabels: React.FC<LineEndLabelsProps> = ({
       {sortedLabels.map((labelData) => {
         const { x, y, label, fillColor, isEntering, isLeaving } = labelData;
 
-        const transform = isEntering ? 'scale(1.5)' : 'scale(1)';
+        const transform = isEntering ? 'scale(1.2)' : 'scale(1)';
 
         return (
           <text
             key={label}
             x={x}
             y={y}
-            textAnchor="end" // Align the text to the left of the x-coordinate
+            textAnchor="end"
             style={{
               fill: fillColor,
-              fontSize: 16, // Increased font size from 14 to 16
-              fontWeight: 'bold',
+              fontSize: 14,
+              fontWeight: 600,
               opacity: isLeaving ? 0 : 1,
               transform,
               transition: 'opacity 0.5s, transform 0.5s',
               transformOrigin: 'right center',
+              textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
             }}
           >
             {label}

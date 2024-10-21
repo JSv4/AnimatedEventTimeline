@@ -191,32 +191,33 @@ const AppContainer = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  background-color: #f0f2f5;
-  padding: 1rem;
+  background-color: #f8f9fa;
+  padding: 2rem;
   box-sizing: border-box;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  overflow: hidden;
 `;
 
 const DashboardCard = styled.div`
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
 `;
 
 const ChartContainer = styled.div`
   flex: 1;
   min-height: 0;
   position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f9fa;
 `;
 
 const ControlsContainer = styled.div`
-  margin-top: 1rem;
+  margin-top: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -229,22 +230,24 @@ const StatsContainer = styled.div`
 `;
 
 const StatItem = styled.div`
-  background-color: #f8f9fa;
+  background-color: #f1f3f5;
   border-radius: 8px;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   text-align: center;
 `;
 
 const StatValue = styled.h3`
   margin: 0;
-  font-size: 1.5rem;
-  color: #1f77b4;
+  font-size: 1.75rem;
+  color: #343a40;
 `;
 
 const StatLabel = styled.p`
-  margin: 0;
+  margin: 0.25rem 0 0;
   font-size: 0.9rem;
   color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 `;
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -255,27 +258,42 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = styled.button.withConfig({
   shouldForwardProp: (prop) => !['marginRight', 'primary'].includes(prop),
 })<ButtonProps>`
-  background-color: ${(props) => (props.primary ? '#1f77b4' : '#ffffff')};
-  color: ${(props) => (props.primary ? '#ffffff' : '#1f77b4')};
-  border: 2px solid #1f77b4;
-  padding: 0.5rem 1rem;
+  background-color: ${(props) => (props.primary ? '#4263eb' : '#ffffff')};
+  color: ${(props) => (props.primary ? '#ffffff' : '#4263eb')};
+  border: 2px solid #4263eb;
+  padding: 0.75rem 1.5rem;
   margin-right: ${(props) => (props.marginRight ? '1rem' : '0')};
   cursor: pointer;
   font-size: 1rem;
-  border-radius: 4px;
+  font-weight: 600;
+  border-radius: 6px;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.primary ? '#155a8a' : '#e6f2ff')};
+    background-color: ${(props) => (props.primary ? '#3b5bdb' : '#e7f5ff')};
   }
 `;
 
-
 const Heading = styled.h1`
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
-  color: #333;
-  font-size: 1.75rem;
+  color: #212529;
+  font-size: 2.5rem;
+  font-weight: 700;
+`;
+
+const ToggleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 1.5rem;
+`;
+
+const ToggleLabel = styled.span`
+  margin-right: 0.75rem;
+  font-size: 1rem;
+  color: #495057;
+  font-weight: 500;
 `;
 
 // Number of milliseconds to display the event modal
@@ -287,22 +305,6 @@ interface AppState {
   currentTimeIndex: number;
   pauseOnEvents: boolean;
 }
-
-// Add this new styled component
-const ToggleContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-right: 1rem;
-`;
-
-const ToggleLabel = styled.span`
-  margin-right: 0.5rem;
-  font-size: 0.9rem;
-  color: #666;
-`;
-
-
 
 /**
  * Main application component.
@@ -818,53 +820,54 @@ export const App: React.FC = () => {
                 motionConfig="gentle"
                 colors={(serie) => colorScale(serie.id as string)}
                 theme={{
-                  background: '#ffffff',
+                  background: '#f8f9fa',
                   text: {
-                    fill: '#333333',
-                    fontSize: 14, // Increased base font size
+                    fill: '#495057',
+                    fontSize: 14,
                   },
                   axis: {
                     domain: {
                       line: {
-                        stroke: '#e0e0e0',
+                        stroke: '#ced4da',
                         strokeWidth: 1,
                       },
                     },
                     ticks: {
                       line: {
-                        stroke: '#e0e0e0',
+                        stroke: '#ced4da',
                         strokeWidth: 1,
                       },
                       text: {
-                        fill: '#666666',
-                        fontSize: 14, // Increased tick label font size
+                        fill: '#495057',
+                        fontSize: 12,
                       },
                     },
                     legend: {
                       text: {
-                        fontSize: 16, // Increased legend font size
-                        fill: '#333333',
+                        fontSize: 14,
+                        fill: '#343a40',
                         fontWeight: 'bold',
                       },
                     },
                   },
                   grid: {
                     line: {
-                      stroke: '#f0f0f0',
+                      stroke: '#e9ecef',
                       strokeWidth: 1,
                     },
                   },
                   legends: {
                     text: {
-                      fill: '#333333',
-                      fontSize: 14, // Increased legend text size
+                      fill: '#495057',
+                      fontSize: 12,
                     },
                   },
                   tooltip: {
                     container: {
                       background: '#ffffff',
-                      boxShadow: '0 3px 9px rgba(0, 0, 0, 0.2)',
-                      borderRadius: '4px',
+                      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                      borderRadius: '6px',
+                      padding: '8px 12px',
                     },
                   },
                 }}
@@ -892,15 +895,13 @@ export const App: React.FC = () => {
                   <StatLabel>Total Stars</StatLabel>
                 </StatItem>
               </StatsContainer>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ToggleContainer style={{ marginRight: '1rem', display: 'flex', alignItems: 'center' }}>
-                  <ToggleLabel style={{ marginRight: '0.5rem' }}>Pause on events</ToggleLabel>
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Switch
-                      checked={pauseOnEvents}
-                      onChange={handlePauseOnEventsToggle}
-                    />
-                  </div>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <ToggleContainer>
+                  <ToggleLabel>Pause on events</ToggleLabel>
+                  <Switch
+                    checked={pauseOnEvents}
+                    onChange={handlePauseOnEventsToggle}
+                  />
                 </ToggleContainer>
                 <Button onClick={handlePlayPause} marginRight primary>
                   {isPlaying ? 'Pause' : 'Play'}
@@ -912,6 +913,7 @@ export const App: React.FC = () => {
         </AppContainer>
       );
   };
+
 
 
 

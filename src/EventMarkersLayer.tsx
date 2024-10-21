@@ -108,7 +108,8 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
             <line
               y1={0}
               y2={innerHeight}
-              stroke="#000"
+              stroke="#adb5bd"
+              strokeWidth={1.5}
               strokeDasharray="4 4"
             />
             <text
@@ -117,7 +118,12 @@ const EventMarkersLayer: React.FC<EventMarkersLayerProps> = ({
               textAnchor="end"
               dominantBaseline="text-after-edge"
               transform="rotate(-90)"
-              style={{ fontSize: 16, fill: '#000' }}
+              style={{
+                fontSize: 12,
+                fill: '#495057',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+              }}
             >
               {event.title}
             </text>
