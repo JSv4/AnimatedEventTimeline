@@ -110,7 +110,7 @@ const events: Event[] = [
         date: "2017-06-12",
         title: "Transformer Architecture Introduced",
         description: "Google researchers publish 'Attention is All You Need', introducing the Transformer architecture that revolutionizes natural language processing.",
-        logoUrl: "https://banner2.cleanpng.com/20190228/qby/kisspng-google-logo-google-account-g-suite-google-images-g-icon-archives-search-png-1713904157115.webp"
+        logoUrl: "https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-512.png"
     },
     {
         date: "2017-09-14", // Estimated based on available information
@@ -151,19 +151,19 @@ const events: Event[] = [
     {
         date: "2018-07-01", // Approximate date based on available information
         title: "Clifford Chance Launches Applied Solutions",
-        description: "Clifford Chance establishes Applied Solutions, a separate entity focused on delivering tech-enabled products to clients. This move represents a significant step in integrating technology into legal services delivery.",
+        description: "Clifford Chance establishes Applied Solutions, a separate entity focused on delivering tech-enabled products to clients.",
         logoUrl: "https://pbs.twimg.com/profile_images/1675856704364335107/wj0lqUju_400x400.png"
     },
     {
         date: "2019-02-05",
         title: "Wilson Sonsini Launches SixFifty",
-        description: "Wilson Sonsini Goodrich & Rosati announces the formation of SixFifty, a new software subsidiary. SixFifty aims to develop automated tools to make legal processes efficient and affordable, combining technology with human expertise.",
+        description: "Wilson Sonsini Goodrich & Rosati announces the formation of SixFifty, a new software subsidiary. SixFifty aims to develop automated tools to make legal processes efficient and affordable.",
         logoUrl: "https://cdn.prod.website-files.com/622357b2bf2cca337e9cf3aa/64e93be697a309c331a877cb_Wilson%20Sonsini%20logo%20dark.webp"
     },
     {
         date: "2023-05-01",
         title: "ChatGD Released",
-        description: "Gunderson Dettmer releases ChatGD, an AI-powered legal assistant for startup and venture capital law.",
+        description: "Gunderson Dettmer releases ChatGD, the first RAG-powered GenAI chatbot built by a US firm.",
         logoUrl: "https://vault.com/_next/image?url=https%3A%2F%2Fmedia2.vault.com%2F14347497%2Fgunderson-logo-brand-mark-navy.jpg&w=384&q=75"
     }
 ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
