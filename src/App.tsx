@@ -113,12 +113,6 @@ const events: Event[] = [
         logoUrl: "https://banner2.cleanpng.com/20190228/qby/kisspng-google-logo-google-account-g-suite-google-images-g-icon-archives-search-png-1713904157115.webp"
     },
     {
-        date: "2019-07-24",
-        title: "Simmons & Simmons Acquires Wavelength",
-        description: "Simmons & Simmons, a leading international law firm, acquires Wavelength Law to enhance its legal technology and innovation capabilities. This move signifies a major shift in how law firms are integrating tech expertise.",
-        logoUrl: "https://pbs.twimg.com/profile_images/1547231423517663232/1aZ0XWke_400x400.jpg"
-    },
-    {
         date: "2017-09-14", // Estimated based on available information
         title: "Atrium LTS Founded",
         description: "Justin Kan founds Atrium LTS, a legal technology startup aimed at revolutionizing legal services through technology and a new business model.",
