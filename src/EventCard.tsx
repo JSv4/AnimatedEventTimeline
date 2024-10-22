@@ -20,11 +20,15 @@ const fadeInScale = keyframes`
   }
 `;
 
-const CardContainer = styled.div`
+const CardWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1000;
+`;
+
+const CardContainer = styled.div`
   width: 95%;
   max-width: 1000px;
   height: 400px;
@@ -34,8 +38,7 @@ const CardContainer = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: row;
-  z-index: 1000;
-  animation: ${fadeInScale} 0.3s ease-out;
+  animation: ${fadeInScale} 0.3s ease-out forwards;
 `;
 
 const LogoContainer = styled.div`
@@ -140,19 +143,25 @@ export const EventCard: React.FC<EventCardProps> = ({ title, description, logoUr
     const parsedDate = new Date(dateString);
     return isNaN(parsedDate.getTime())
       ? dateString
-      : parsedDate.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      : parsedDate.toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
   };
 
   return (
-    <CardContainer>
-      <LogoContainer>
-        <Logo src={logoUrl} alt={title} />
-      </LogoContainer>
-      <ContentContainer>
-        <Title>{title}</Title>
-        <EventDate>{formatDate(date)}</EventDate>
-        <Description dangerouslySetInnerHTML={{ __html: marked(description) }} />
-      </ContentContainer>
-    </CardContainer>
+    <CardWrapper>
+      <CardContainer>
+        <LogoContainer>
+          <Logo src={logoUrl} alt={title} />
+        </LogoContainer>
+        <ContentContainer>
+          <Title>{title}</Title>
+          <EventDate>{formatDate(date)}</EventDate>
+          <Description dangerouslySetInnerHTML={{ __html: marked(description) }} />
+        </ContentContainer>
+      </CardContainer>
+    </CardWrapper>
   );
 };
