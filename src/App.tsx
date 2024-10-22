@@ -85,7 +85,7 @@ const events: Event[] = [
     {
         date: "2017-01-01", // Approximate date based on the information provided
         title: "Allen & Overy Launches FUSE",
-        description: "Allen & Overy establishes FUSE, a tech innovation hub designed to explore, develop, and implement digital solutions in the legal sector. Since its inception, FUSE has hosted over 50 companies and welcomed more than 10,000 visitors.",
+        description: "Allen & Overy establishes FUSE, a tech innovation hub designed to explore, develop, and implement digital solutions in the legal sector.",
         logoUrl: "https://pbcdn1.podbean.com/imglogo/image-logo/7625884/A_O_White_on_red_logo_7pweh.jpg"
     },
     {
