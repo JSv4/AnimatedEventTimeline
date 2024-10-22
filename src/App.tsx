@@ -356,7 +356,7 @@ export const App: React.FC = () => {
     const [projectData, setProjectData] = useState<ProjectData[]>([]);
     const [showModal, setShowModal] = useState<boolean>(false);
     const eventTimerRef = useRef<NodeJS.Timeout | null>(null);
-    const [pauseOnEvents, setPauseOnEvents] = useState<boolean>(false);
+    const [pauseOnEvents, setPauseOnEvents] = useState<boolean>(true);
 
     useEffect(() => {
         if (currentEvent) {
